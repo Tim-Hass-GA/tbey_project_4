@@ -1,0 +1,39 @@
+{% extends 'tbeystore/base.html' %}
+{% block content %}
+  <div class="profile  col s12 m6">
+    <!-- <h2>Collection of cats (/ᐠ｡▿｡ᐟ\):</h2> -->
+    <h2>{{ username }}'s Profile:</h2>
+    <a href="/{{ user.id }}">
+      <h3>Name: {{user.first_name}}</h3>
+    </a>
+    <ul>
+      <li>First name: {{user.first_name}}</li>
+      <li>Last name: {{user.last_name}}</li>
+      <li>Email: {{user.email}}</li>
+      <li>Last Login: {{user.last_login}}</li>
+      <li>Date Joined: {{user.date_joined}}</li>
+    </ul>
+    <!-- {% if user.vendor_id > 0 %}
+      <li>Vendor Name: {{vendor.vendor_name}}</li>
+    {% else %} -->
+      <li>Become a vendor link</li>
+    <!-- {% endif %} -->
+  </div>
+{% endblock %}
+
+
+
+<!-- {% for cat in cats %} -->
+<!-- <a href="/{{ cat.id }}"> -->
+<!-- <h3>Name: {{cat.name}}</h3> -->
+<!-- </a> -->
+<!-- <ul> -->
+  <!-- <li>Description: {{cat.description}}</li> -->
+  <!-- <li>Breed: {{cat.breed}}</li> -->
+  <!-- {% if cat.age > 0 %} -->
+  <!-- <li>Age: {{cat.age}}</li> -->
+  <!-- {% else %} -->
+  <!-- <li>Kitten</li> -->
+  <!-- {% endif %} -->
+<!-- </ul> -->
+<!-- {% endfor %} -->

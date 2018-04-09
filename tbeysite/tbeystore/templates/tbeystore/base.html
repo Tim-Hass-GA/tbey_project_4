@@ -1,0 +1,43 @@
+<!-- this will act as our layout template-->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>TBEY STORE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'tbeystore/style/main.css' %}">
+  </head>
+  <body>
+    <div class="row">
+      <h1>TBEY</h1>
+      <hr/>
+        <a href="{% url 'tbeystore:index' %}">Home</a>
+        <a href="{% url 'tbeystore:api' %}">Api</a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'tbeystore:profile' user.username %}">Hello {{ user.username }}!</a> |
+        <a href="{% url 'tbeystore:profile' user.username %}">Become a Vendor.</a> |
+        <a href="{% url 'tbeystore:logout' %}">Logout</a>
+        <!-- TODO: add admin link for admin user -->
+        {% else %}
+        <a href="{% url 'tbeystore:login' %}">Login</a> |
+        <a href="{% url 'tbeystore:signup' %}">Sign Up</a>
+        {% endif %}
+      <hr/>
+      <div class="error_message">
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+      </div>
+        {% block content %}
+        {% endblock %}
+    </div>
+    <footer>
+      <div class="row">
+        <div class="col s12">
+          All rights reserved, TBEY 2018
+        </div>
+      </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="{% static 'tbeystore/script/app.js' %}" type="text/javascript"></script>
+  </body>
+</html>

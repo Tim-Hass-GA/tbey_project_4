@@ -1,0 +1,40 @@
+{% extends 'tbeystore/base.html' %}
+{% load staticfiles %}
+<!-- {% load static %} -->
+
+{% block content %}
+  <div class="cats_list  col s12 m6">
+    <!-- <a href="/user/{{cat.user.username}}"> -->
+    <p>Product Details</p></a>
+    <!-- <p>Adobed By: {{ cat.user.username }}</p></a> -->
+    <!-- <h3>Name: {{cat.name}}</h3>
+    <ul>
+      <li>Description: {{cat.description}}</li>
+      <li>Breed: {{cat.breed}}</li>
+      {% if cat.age > 0 %}
+      <li>Age: {{cat.age}}</li>
+      {% else %}
+      <li>Kitten</li>
+      {% endif %}
+    </ul> -->
+    <hr />
+    <h5> Cat Options </h5>
+
+    <!-- <form class="toy_form" action="/{{ cat.id }}/toy/create/" method="post">
+      {% csrf_token %}
+      {{ form }}
+      <input type="submit"  value="Add Toy">
+    </form>
+    <form class="delete_form" action="/{{ cat.id }}/destroy/" method="post">
+      {% csrf_token %}
+      <input type="submit"  value="Destroy">
+    </form> -->
+
+  </div>
+  <div class="cat_image">
+    <div class="product_image col s12 m6">
+      <h3> Product </h3>
+      <!-- <img src="{{ imageurl }}" alt="a random cat image"/> -->
+    </div>
+  </div>
+{% endblock %}
