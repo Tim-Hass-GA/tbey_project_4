@@ -105,11 +105,12 @@ def signup(request):
             login(request, user)
             return redirect('/')
         else:
-            print("Something when wrong in the sign up process")
+            print("Something when wrong in the sign up process.")
             # redisplay the signup form
             return render(request, 'tbeystore/signup.html', {
                 'form':form,
-                'error_message': "Username or password doesn't match."
+                'error_message': 
+                "Something when wrong in the sign up process. Please try again"
             })
     else:
         form = SignUpForm()
