@@ -16,24 +16,8 @@
     <!-- {% if user.vendor_id > 0 %}
       <li>Vendor Name: {{vendor.vendor_name}}</li>
     {% else %} -->
-      <li>Become a vendor link</li>
+      <li>Become a vendor</li>
+      <a href="{% url 'tbeystore:vendor_signup' user.id %}">Vendor Signup</a>
     <!-- {% endif %} -->
   </div>
 {% endblock %}
-
-
-
-<!-- {% for cat in cats %} -->
-<!-- <a href="/{{ cat.id }}"> -->
-<!-- <h3>Name: {{cat.name}}</h3> -->
-<!-- </a> -->
-<!-- <ul> -->
-  <!-- <li>Description: {{cat.description}}</li> -->
-  <!-- <li>Breed: {{cat.breed}}</li> -->
-  <!-- {% if cat.age > 0 %} -->
-  <!-- <li>Age: {{cat.age}}</li> -->
-  <!-- {% else %} -->
-  <!-- <li>Kitten</li> -->
-  <!-- {% endif %} -->
-<!-- </ul> -->
-<!-- {% endfor %} -->

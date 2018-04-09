@@ -12,11 +12,11 @@
     <div class="row">
       <h1>TBEY</h1>
       <hr/>
-        <a href="{% url 'tbeystore:index' %}">Home</a>
-        <a href="{% url 'tbeystore:api' %}">Api</a>
+        <a href="{% url 'tbeystore:index' %}">Home</a> |
+        <a href="{% url 'tbeystore:api' %}">Api</a> |
         {% if user.is_authenticated %}
         <a href="{% url 'tbeystore:profile' user.username %}">Hello {{ user.username }}!</a> |
-        <a href="{% url 'tbeystore:profile' user.username %}">Become a Vendor.</a> |
+        <a href="{% url 'tbeystore:vendor_signup' user.id %}">Become a Vendor</a> |
         <a href="{% url 'tbeystore:logout' %}">Logout</a>
         <!-- TODO: add admin link for admin user -->
         {% else %}
@@ -37,7 +37,8 @@
         </div>
       </div>
     </footer>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script><!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
     <script src="{% static 'tbeystore/script/app.js' %}" type="text/javascript"></script>
   </body>
 </html>

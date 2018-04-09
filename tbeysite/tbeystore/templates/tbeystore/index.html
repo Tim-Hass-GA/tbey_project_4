@@ -5,31 +5,32 @@ to the app (subfolder of templates) -->
 {% block content %}
   <div class="product_list col s12 m6">
     <h3> Products </h3>
-
-
-    <!-- {% for cat in cats %}
-    <a href="/{{cat.id}}">
-    <h3>Name: {{cat.name}}</h3>
+    {% for product in products %}
+    <a href="/{{product.id}}">
+    <h3>{{product.name}}</h3>
     </a>
-    <a href="/user/{{cat.user.username}}">
-    <p>Adobed By: {{ cat.user.username }}</p></a> -->
-
-    <!-- <ul>
-      <li>Description: {{cat.description}}</li>
-      <li>Breed: {{cat.breed}}</li>
+    <!-- <a href="/user/{{product.vendor.vendor_name}}">
+    <p>Adobed By: {{ product.user.username }}</p></a> -->
+    <ul>
+      <li>Category: {{product.category}}</li>
+      <li>Description: {{product.description}}</li>
+      <li>Price: ${{product.price}}</li>
+      <li>vendor: {{product.vendor}}</li>
+      <li>Item Count: {{product.item_count}}</li>
+      <li>Date Added: {{product.date_added}}</li>
+      <!-- <li>Breed: {{cat.breed}}</li>
       {% if cat.age > 0 %}
       <li>Age: {{cat.age}}</li>
       {% else %}
       <li>Kitten</li>
-      {% endif %}
-    </ul> -->
-    <h3>Likes:</h3>
-
-    <!-- <a class="waves-effect waves-light btn like" data-id="{{cat.id}}">
-      Likes: {% if cat.likes > 0 %} {{ cat.likes }} {% else %} None {% endif %}
+      {% endif %} -->
+    </ul>
+    <h4>Likes:</h4>
+    <a class="waves-effect waves-light btn like" data-id="{{product.id}}">
+      Likes: {% if product.likes > 0 %} {{ product.likes }} {% else %} None {% endif %}
     </a>
     <hr/>
-    {% endfor %} -->
+    {% endfor %}
 
   </div>
   <div class="new_product_form col s12 m6">
@@ -43,7 +44,7 @@ to the app (subfolder of templates) -->
     <h3> Vendors </h3>
     {% for vendor in vendors %}
       <a href="vendor/{{ vendor.id }}">
-        <h3>Name: {{ vendor.vendor_name }}</h3>
+        <h3>{{ vendor.vendor_name }}</h3>
       </a>
     {% endfor %}
   </div>

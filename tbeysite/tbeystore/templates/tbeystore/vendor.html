@@ -1,7 +1,6 @@
 {% extends 'tbeystore/base.html' %}
 {% block content %}
   <div class="vendor_profile col s12 m6">
-    <!-- <h2>Collection of cats (/ᐠ｡▿｡ᐟ\):</h2> -->
     <h2>{{ vendor.vendor_name }}'s Profile:</h2>
     <!-- <a href="/{{ user.id }}">
       <h3>Name: {{user.first_name}}</h3>
@@ -20,22 +19,40 @@
     {% else %} -->
       <!-- <li>Become a vendor link</li> -->
     <!-- {% endif %} -->
+  <!-- </div> -->
+  <!-- <div class="new_product"> -->
+    <h3>Add New Product</h3>
+    <form class="product_form" action="/post_product/" method="post">
+      {% csrf_token %}
+      {{ form }}
+      <input type="submit" value="Submit"/>
+    </form>
+  </div>
+
+  <div class="vendor_product_list col s12 m6">
+    <h3> Vendor Products </h3>
+    {% for product in products %}
+    <a href="/{{product.id}}">
+    <h3>{{product.name}}</h3>
+    </a>
+    <!-- <a href="/user/{{product.vendor.vendor_name}}">
+    <p>Adobed By: {{ product.user.username }}</p></a> -->
+    <ul>
+      <li>Category: {{product.category}}</li>
+      <li>Description: {{product.description}}</li>
+      <li>Price: ${{product.price}}</li>
+      <li>vendor: {{product.vendor}}</li>
+      <li>Item Count: {{product.item_count}}</li>
+      <li>Date Added: {{product.date_added}}</li>
+      <!-- <li>Breed: {{cat.breed}}</li> -->
+      <h3> Product Questions </h3>
+      <!-- {% if product.question > 0 %} -->
+      <!-- <li>Question: {{product.question}}</li>
+      {% else %}
+      <li>No Questions</li>
+      {% endif %} -->
+    </ul>
+    <hr/>
+    {% endfor %}
   </div>
 {% endblock %}
-
-
-
-<!-- {% for cat in cats %} -->
-<!-- <a href="/{{ cat.id }}"> -->
-<!-- <h3>Name: {{cat.name}}</h3> -->
-<!-- </a> -->
-<!-- <ul> -->
-  <!-- <li>Description: {{cat.description}}</li> -->
-  <!-- <li>Breed: {{cat.breed}}</li> -->
-  <!-- {% if cat.age > 0 %} -->
-  <!-- <li>Age: {{cat.age}}</li> -->
-  <!-- {% else %} -->
-  <!-- <li>Kitten</li> -->
-  <!-- {% endif %} -->
-<!-- </ul> -->
-<!-- {% endfor %} -->

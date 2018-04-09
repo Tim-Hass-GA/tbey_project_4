@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Vendor, Question, Choice
-from .forms import LoginForm, SignUpForm
+from .models import Vendor, Question, Choice, Product, Category
+from .forms import LoginForm, SignUpForm, ProductForm, VendorForm
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
@@ -20,30 +20,33 @@ import requests
 ##### GET HOME ROUTE
 def index(request):
     vendors = Vendor.objects.all()
+    products = Product.objects.all()
     # form = CatForm()
-    return render(request, 'tbeystore/index.html', {'vendors':vendors})
+    return render(request, 'tbeystore/index.html', {'vendors':vendors, 'products':products})
     # render(request template context)
     # return HttpResponse("Hello, world. You're at the polls index.")
 
-##### SHOW CAT ROUTE
-# def show(request, cat_id):
-#     cat = Cat.objects.get(id=cat_id)
-#     form = ToyForm()
+##### SHOW PRODUCT ROUTE
+def product(request, product_id):
+    product = Product.objects.get(id=product_id)
+    category = Category.objects.all()
+#     form = QuestionForm()
 #     # payload = {'key':'TOKEN'}
 #     res = requests.get('http://thecatapi.com/api/images/get')
 #     # res = requests.get('http://thecatapi.com/api/images/get', params=payload)
 #     # return render(request, 'api.html', {'imageurl':res.url})
-#     return render(request, 'show.html', {'cat':cat, 'form':form, 'imageurl':res.url})
+    return render(request, 'tbeystore/product.html', {'product':product, 'category':category})
 
-##### CREATE CAT ROUTE
-# def post_cat(request):
-#     form = CatForm(request.POST)
-#     # method on the form object
-#     if form.is_valid():
-#         cat = form.save(commit = False)
-#         cat.user = request.user
-#         cat.save()
-#     return HttpResponseRedirect('/')
+##### CREATE PRODUCT ROUTE
+def post_product(request, vendor_id):
+    form = ProductForm(request.POST)
+    vendor = Vendor.objects.get(id=vendor_id)
+    # method on the form object
+    if form.is_valid():
+        product = form.save(commit = False)
+        product.vendor = request.vendor
+        product.save()
+    return HttpResponseRedirect('/')
 
 ##### PROFILE ROUTE
 def profile(request, user_name):
@@ -54,10 +57,47 @@ def profile(request, user_name):
 ##### VENDOR PROFILE ROUTE
 def vendor(request, vendor_id):
     vendor = Vendor.objects.get(id=vendor_id)
+    products = Product.objects.filter(vendor=vendor)
+    # questions = Questions.objects.filter(products=products)
+    form = ProductForm()
     # vendor_owner = User.objects.get(id=vendor.user_id)
-    print(vendor.id)
+    # print(vendor.id)
     # return render(request, 'tbeystore/vendor.html', {'vendor':vendor , 'user':vendor_owner})
-    return render(request, 'tbeystore/vendor.html', {'vendor':vendor})
+    return render(request, 'tbeystore/vendor.html', {'vendor':vendor, 'products':products, 'form':form})
+    # return render(request, 'tbeystore/vendor.html', {'vendor':vendor, 'form':form})
+
+def vendor_signup(request, user_id):
+    if request.method == 'POST':
+        print('posting')
+        form = VendorForm(request.POST)
+        user = User.objects.get(id=user_id)
+        # user_id = request.GET.get(id=user_id)
+        print(user.id)
+        if user is not None:
+            if user.is_active:
+                form.user_id = request.user.id
+                print('we are posting a vendor')
+                print(form.user_id)
+                if form.is_valid():
+                    print('form is valid')
+                    # clean form
+                    vendor = form.save()
+                    vendor.save()
+                    return HttpResponseRedirect('/')
+                else:
+                    print('from is not valid')
+                    form = VendorForm()
+                    return render(request, 'tbeystore/vendor_signup.html', {'form':form})
+            else:
+                form = LoginForm()
+                return render(request, 'tbeystore/login.html', {
+                    'form':form,
+                    'error_message': "You must log in to create a vendor account."
+                })
+    else:
+        form = VendorForm()
+        return render(request, 'tbeystore/vendor_signup.html', {'form':form})
+
 
 ##### LOGIN ROUTE
 def login_view(request):
@@ -70,7 +110,7 @@ def login_view(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return HttpResponseRedirect('/')
+                    return redirect('/')
                 else:
                     print("This account has been disabled.")
                     return render(request, 'tbeystore/signup.html', {
@@ -109,25 +149,26 @@ def signup(request):
             # redisplay the signup form
             return render(request, 'tbeystore/signup.html', {
                 'form':form,
-                'error_message': 
+                'error_message':
                 "Something when wrong in the sign up process. Please try again"
             })
     else:
         form = SignUpForm()
         return render(request, 'tbeystore/signup.html', {'form':form})
 
-##### LIKE CAT ROUTE
+##### LIKE PRODUCT ROUTE
 ## TODO: add conditional for users ...............
-# def like_cat(request):
-#     cat_id = request.GET.get('cat_id', None)
-#     likes = 0
-#     if (cat_id):
-#         cat = Cat.objects.get(id=int(cat_id))
-#         if cat is not None:
-#             likes = cat.likes + 1
-#             cat.likes = likes
-#             cat.save()
-#     return HttpResponse(likes)
+def like_product(request):
+    # print('like product view')
+    product_id = request.GET.get('product_id', None)
+    likes = 0
+    if (product_id):
+        product = Product.objects.get(id=int(product_id))
+        if product is not None:
+            likes = product.likes + 1
+            product.likes = likes
+            product.save()
+    return HttpResponse(likes)
 
 ##### CAT PUT ROUTE
 ## TODO: add conditional for users ...............

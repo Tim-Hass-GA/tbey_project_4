@@ -1,0 +1,12 @@
+{% extends 'tbeystore/base.html' %}
+{% load static %}
+{% block content %}
+  <div class="vendor_signup col s12 m6">
+    <h3>Vendor Sign Up</h3>
+    <form class="vendor_signup_form" method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Sign Up">
+    </form>
+  </div>
+{% endblock %}

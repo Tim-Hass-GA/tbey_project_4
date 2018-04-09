@@ -17,14 +17,15 @@ urlpatterns = [
     path('', views.index, name='index'),
     # path('', views.IndexView.as_view(), name='index'),
     # re_path(r'^([0-9]+)/$', views.show, name='show'),
-    # path('<int:cat_id>/', views.show, name='show'),
-    # path('post_cat/', views.post_cat, name='post_cat'),
+    path('<int:product_id>/', views.product, name='product'),
+    path('<int:vendor_id>/post_product/', views.post_product, name='post_product'),
     path('user/<user_name>/', views.profile, name='profile'),
     path('vendor/<int:vendor_id>/', views.vendor, name='vendor'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('signup/', views.signup, name='signup'),
-    # path('like_cat/', views.like_cat, name='like_cat'),
+    path('vendor_signup/<int:user_id>', views.vendor_signup, name='vendor_signup'),
+    path('like_product/', views.like_product, name='like_product'),
     # path('<int:cat_id>/edit/', views.edit_cat, name='edit_cat'),
     # path('<int:cat_id>/destroy/', views.delete_cat, name='delete_cat'),
     # path('<int:cat_id>/toy/create/', views.create_toy, name='create_toy'),
@@ -39,10 +40,3 @@ urlpatterns = [
     # /question/5/vote
     path('<int:question_id>/vote/', views.vote, name='vote'),
 ]
-
-############
-# map the views
-# app_name = 'polls'
-# urlpatterns = [
-
-# ]

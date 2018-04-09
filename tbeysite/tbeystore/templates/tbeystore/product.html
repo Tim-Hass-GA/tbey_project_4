@@ -3,22 +3,36 @@
 <!-- {% load static %} -->
 
 {% block content %}
-  <div class="cats_list  col s12 m6">
+  <div class="product_list  col s12 m6">
     <!-- <a href="/user/{{cat.user.username}}"> -->
-    <p>Product Details</p></a>
-    <!-- <p>Adobed By: {{ cat.user.username }}</p></a> -->
-    <!-- <h3>Name: {{cat.name}}</h3>
+    <!-- <p>Product Details</p></a> -->
+    <a href="/{{product.id}}">
+    <h3>{{product.name}}</h3>
+    </a>
+    <!-- <a href="/user/{{product.vendor.vendor_name}}">
+    <p>Adobed By: {{ product.user.username }}</p></a> -->
+
     <ul>
-      <li>Description: {{cat.description}}</li>
-      <li>Breed: {{cat.breed}}</li>
+      <li>Category: {{product.category}}</li>
+      <li>Description: {{product.description}}</li>
+      <li>Price: ${{product.price}}</li>
+      <li>vendor: {{product.vendor}}</li>
+      <li>Item Count: {{product.item_count}}</li>
+      <li>Date Added: {{product.date_added}}</li>
+      <!-- <li>Breed: {{cat.breed}}</li>
       {% if cat.age > 0 %}
       <li>Age: {{cat.age}}</li>
       {% else %}
       <li>Kitten</li>
-      {% endif %}
-    </ul> -->
-    <hr />
-    <h5> Cat Options </h5>
+      {% endif %} -->
+    </ul>
+    <h3>Likes:</h3>
+
+    <a class="waves-effect waves-light btn like" data-id="{{product.id}}">
+      Likes: {% if product.likes > 0 %} {{ product.likes }} {% else %} None {% endif %}
+    </a>
+    <hr/>
+    <h5> Product Options </h5>
 
     <!-- <form class="toy_form" action="/{{ cat.id }}/toy/create/" method="post">
       {% csrf_token %}
@@ -31,7 +45,7 @@
     </form> -->
 
   </div>
-  <div class="cat_image">
+  <div class="product_image">
     <div class="product_image col s12 m6">
       <h3> Product </h3>
       <!-- <img src="{{ imageurl }}" alt="a random cat image"/> -->
