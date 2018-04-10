@@ -7,30 +7,42 @@
     <title>TBEY STORE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css">
     <link rel="stylesheet" type="text/css" href="{% static 'tbeystore/style/main.css' %}">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Monofett" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css?family=Londrina+Sketch" rel="stylesheet">
   </head>
   <body>
-    <div class="row">
-      <h1>TBEY</h1>
-      <hr/>
-        <a href="{% url 'tbeystore:index' %}">Home</a> |
-        <a href="{% url 'tbeystore:api' %}">Api</a> |
-        {% if user.is_authenticated %}
-        <a href="{% url 'tbeystore:profile' user.username %}">Hello {{ user.username }}!</a> |
-        <a href="{% url 'tbeystore:vendor_signup' user.id %}">Become a Vendor</a> |
-        <a href="{% url 'tbeystore:logout' %}">Logout</a>
-        <!-- TODO: add admin link for admin user -->
-        {% else %}
-        <a href="{% url 'tbeystore:login' %}">Login</a> |
-        <a href="{% url 'tbeystore:signup' %}">Sign Up</a>
-        {% endif %}
-      <hr/>
-      <div class="error_message">
-        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    <div class="container">
+      <div class="row">
+        <div class="col s12">
+          <hr/>
+            <nav>
+              <a href="{% url 'tbeystore:index' %}">Home</a> |
+              <a href="{% url 'tbeystore:api' %}">Api</a> |
+              {% if user.is_authenticated %}
+              <a href="{% url 'tbeystore:profile' user.username %}">Hello {{ user.username }}!</a> |
+              <a href="{% url 'tbeystore:vendor_signup' user.id %}">Become a Vendor</a> |
+              <a href="{% url 'tbeystore:logout' %}">Logout</a>
+              <!-- TODO: add admin link for admin user -->
+              {% else %}
+              <a href="{% url 'tbeystore:login' %}">Login</a> |
+              <a href="{% url 'tbeystore:signup' %}">Sign Up</a>
+              {% endif %}
+            </nav>
+          <hr/>
+        </div>
       </div>
-        {% block content %}
-        {% endblock %}
     </div>
-    <footer>
+    <div class="container">
+      <div class="row">
+        <h1 class="logo">TBEY</h1>
+        <div class="error_message">
+          {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        </div>
+          {% block content %}
+          {% endblock %}
+      </div>
+    </div>
+    <footer class="page-footer container">
       <div class="row">
         <div class="col s12">
           All rights reserved, TBEY 2018

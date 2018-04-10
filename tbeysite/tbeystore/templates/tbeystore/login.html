@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% block content %}
   <div class="login col s12 m6">
-    <h1>Login</h1>
+    <h2>Login</h2>
       <form class="login_form" action="." method="POST">
         {% csrf_token %}
         {{ form.as_p}}

@@ -18,6 +18,36 @@ import requests
 #  example template should be at polls/templates/polls/index.html
 
 ##### GET HOME ROUTE
+
+
+
+
+# class QuestionIndexView(generic.ListView):
+#     template_name = 'tbeystore/question.html'
+#     context_object_name = 'latest_question_list'
+#
+#     def get_queryset(self):
+        # Return the last 5 published questions
+        # not including those set for future publishing date
+        # return Question.objects.filter(
+        #     pub_date__lte=timezone.now()
+        # ).order_by('-pub_date')[:5]
+        # return Question.objects.filter(
+        #     pub_date__lte=timezone.now()
+        # ).order_by('-pub_date')[:5]
+        # return Question.objects.order_by('-pub_date')[:5]
+
+# 1 details
+##########   -- refactor
+# try:
+#     question = Question.objects.get(pk=question_id)
+# except Question.DoesNotExist:
+#     raise Http404("Question does not exist")
+# return render(request, 'polls/detail.html', {'question':question})
+
+
+
+
 def index(request):
     vendors = Vendor.objects.all()
     products = Product.objects.all()
@@ -67,12 +97,42 @@ def post_product(request, vendor_id):
             'error_message': "Something when wrong. Make sure you're signed in."
         })
 
-##### PROFILE ROUTE
-def profile(request, user_name):
-    user = User.objects.get(username=user_name)
-    # vendor = Vendor.objects.filter(user=user)
-    return render(request, 'tbeystore/profile.html', {'username':user_name})
+##### PRODUCT PUT ROUTE
+## TODO: add conditional for users ...............
+# def edit_cat(request, cat_id):
+#     instance = get_object_or_404(Cat, id=cat_id)
+#     form = CatForm(request.POST or None, instance=instance)
+#     if form.is_valid():
+#         form.save()
+#         return redirect('show', cat_id)
+#     return render(request, 'edit_cat.html', {'cat':instance, 'form':form})
 
+##### PRODUCT DELETE ROUTE
+## TODO: add conditional for users ...............
+# def delete_cat(request, cat_id):
+#     if request.method == 'POST':
+#         instance = Cat.objects.get(pk=cat_id)
+#         instance.delete()
+#         return redirect('index')
+
+##### LIKE PRODUCT ROUTE
+## TODO: add conditional for users ...............
+def like_product(request):
+    # print('like product view')
+    product_id = request.GET.get('product_id', None)
+    likes = 0
+    if (product_id):
+        product = Product.objects.get(id=int(product_id))
+        if product is not None:
+            likes = product.likes + 1
+            product.likes = likes
+            product.save()
+    return HttpResponse(likes)
+
+
+
+
+#### VENDOR ####
 ##### VENDOR PROFILE ROUTE
 def vendor(request, vendor_id):
     vendor = Vendor.objects.get(id=vendor_id)
@@ -84,6 +144,8 @@ def vendor(request, vendor_id):
     # return render(request, 'tbeystore/vendor.html', {'vendor':vendor , 'user':vendor_owner})
     return render(request, 'tbeystore/vendor.html', {'vendor':vendor, 'products':products, 'form':form})
     # return render(request, 'tbeystore/vendor.html', {'vendor':vendor, 'form':form})
+
+
 
 
 # question = get_object_or_404(Question, pk=question_id)
@@ -135,6 +197,35 @@ def vendor_signup(request, user_id):
         form = VendorForm()
         return render(request, 'tbeystore/vendor_signup.html', {'form':form})
 
+
+##### VENDOR PUT ROUTE
+## TODO: add conditional for users ...............
+# def edit_cat(request, cat_id):
+#     instance = get_object_or_404(Cat, id=cat_id)
+#     form = CatForm(request.POST or None, instance=instance)
+#     if form.is_valid():
+#         form.save()
+#         return redirect('show', cat_id)
+#     return render(request, 'edit_cat.html', {'cat':instance, 'form':form})
+
+##### VENDOR DELETE ROUTE
+## TODO: add conditional for users ...............
+# def delete_cat(request, cat_id):
+#     if request.method == 'POST':
+#         instance = Cat.objects.get(pk=cat_id)
+#         instance.delete()
+#         return redirect('index')
+
+
+
+
+
+#### USER ###
+##### PROFILE ROUTE
+def profile(request, user_name):
+    user = User.objects.get(username=user_name)
+    # vendor = Vendor.objects.filter(user=user)
+    return render(request, 'tbeystore/profile.html', {'username':user_name})
 
 ##### LOGIN ROUTE
 def login_view(request):
@@ -193,37 +284,11 @@ def signup(request):
         form = SignUpForm()
         return render(request, 'tbeystore/signup.html', {'form':form})
 
-##### LIKE PRODUCT ROUTE
-## TODO: add conditional for users ...............
-def like_product(request):
-    # print('like product view')
-    product_id = request.GET.get('product_id', None)
-    likes = 0
-    if (product_id):
-        product = Product.objects.get(id=int(product_id))
-        if product is not None:
-            likes = product.likes + 1
-            product.likes = likes
-            product.save()
-    return HttpResponse(likes)
 
-##### CAT PUT ROUTE
-## TODO: add conditional for users ...............
-# def edit_cat(request, cat_id):
-#     instance = get_object_or_404(Cat, id=cat_id)
-#     form = CatForm(request.POST or None, instance=instance)
-#     if form.is_valid():
-#         form.save()
-#         return redirect('show', cat_id)
-#     return render(request, 'edit_cat.html', {'cat':instance, 'form':form})
 
-##### CAT DELETE ROUTE
-## TODO: add conditional for users ...............
-# def delete_cat(request, cat_id):
-#     if request.method == 'POST':
-#         instance = Cat.objects.get(pk=cat_id)
-#         instance.delete()
-#         return redirect('index')
+
+
+
 
 ##### CREATE TOY ROUTE
 # def create_toy(request, cat_id):
@@ -325,13 +390,6 @@ def vote(request, question_id):
 #     question = get_object_or_404(Question, pk=question_id)
 #     return render(request, 'polls/results.html', {'question':question})
 
-# 1 details
-##########   -- refactor
-# try:
-#     question = Question.objects.get(pk=question_id)
-# except Question.DoesNotExist:
-#     raise Http404("Question does not exist")
-# return render(request, 'polls/detail.html', {'question':question})
 
 # - index
 ##########   -- refactor 3

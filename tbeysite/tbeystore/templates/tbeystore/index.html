@@ -4,26 +4,20 @@
 to the app (subfolder of templates) -->
 {% block content %}
   <div class="product_list col s12 m6">
-    <h3> Products </h3>
+    <h2> Products </h2>
     {% for product in products %}
     <a href="/{{product.id}}">
     <h3>{{product.name}}</h3>
     </a>
-    <!-- <a href="/user/{{product.vendor.vendor_name}}">
-    <p>Adobed By: {{ product.user.username }}</p></a> -->
     <ul>
       <li>Category: {{product.category}}</li>
       <li>Description: {{product.description}}</li>
       <li>Price: ${{product.price}}</li>
-      <li>vendor: {{product.vendor}}</li>
+      <li>Vendor: {{product.vendor_id}}</li>
+      <!-- <a href="/user/{{product.vendor.vendor_name}}">
+      <p>Adobed By: {{ product.user.username }}</p></a> -->
       <li>Item Count: {{product.item_count}}</li>
       <li>Date Added: {{product.date_added}}</li>
-      <!-- <li>Breed: {{cat.breed}}</li>
-      {% if cat.age > 0 %}
-      <li>Age: {{cat.age}}</li>
-      {% else %}
-      <li>Kitten</li>
-      {% endif %} -->
     </ul>
     <h4>Likes:</h4>
     <a class="waves-effect waves-light btn like" data-id="{{product.id}}">
@@ -34,17 +28,17 @@ to the app (subfolder of templates) -->
 
   </div>
   <div class="new_product_form col s12 m6">
-    <h3> something here </h3>
+    <h2> something here </h2>
     <!-- <form class="" action="post_cat/" method="post">
       {% csrf_token %}
       {{ form.as_p }}
       <input type="submit" value="submit"/>
     </form> -->
     <hr/>
-    <h3> Vendors </h3>
+    <h2> Vendors </h2>
     {% for vendor in vendors %}
       <a href="vendor/{{ vendor.id }}">
-        <h3>{{ vendor.vendor_name }}</h3>
+        <h4>{{ vendor.vendor_name }}</h4>
       </a>
     {% endfor %}
   </div>

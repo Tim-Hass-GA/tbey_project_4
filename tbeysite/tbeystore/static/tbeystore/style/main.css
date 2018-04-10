@@ -1,3 +1,6 @@
-h1 {
+h1.logo {
+  /* font-family: 'Monofett', cursive; */
+  font-family: 'Londrina Sketch', cursive;
   color: pink;
+  font-size: 8rem;
 }

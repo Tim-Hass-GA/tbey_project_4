@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
   <div class="signup col s12 m6">
-    <h3>Sign Up</h3>
+    <h2>Sign Up</h2>
     <form class="signup_form" method="POST">
       {% csrf_token %}
       {{ form.as_p }}

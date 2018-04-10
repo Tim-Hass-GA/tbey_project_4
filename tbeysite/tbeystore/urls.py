@@ -14,7 +14,7 @@ from . import views
 # map the views
 app_name = 'tbeystore'
 urlpatterns = [
-    path('', views.index, name='index'),
+    re_path('^$', views.index, name='index'),
     # path('', views.IndexView.as_view(), name='index'),
     # re_path(r'^([0-9]+)/$', views.show, name='show'),
     path('<int:product_id>/', views.product, name='product'),
