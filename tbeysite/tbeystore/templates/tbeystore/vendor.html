@@ -6,7 +6,7 @@
       <h3>Name: {{user.first_name}}</h3>
     </a> -->
     <ul>
-      <li>Vendor name: {{vendor.vendor_name}}</li>
+      <!-- <li>Vendor name: {{vendor.vendor_name}}</li> -->
       <li>Description: {{vendor.description}}</li>
       <li>Email: {{vendor.email}}</li>
       <li>Location: {{vendor.vendor_address}}</li>
@@ -22,7 +22,7 @@
   <!-- </div> -->
   <!-- <div class="new_product"> -->
     <h3>Add New Product</h3>
-    <form class="product_form" action="/post_product/" method="post">
+    <form class="product_form" action="/post_product/{{vendor.id}}/" method="post">
       {% csrf_token %}
       {{ form }}
       <input type="submit" value="Submit"/>

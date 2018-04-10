@@ -9,7 +9,7 @@ class VendorForm(forms.ModelForm):
     # user = forms.ModelChoiceField(queryset=User.objects.get(id=user_id))
     class Meta:
         model = Vendor
-        fields = ('user','vendor_name','description','address','city','state','zip','website','email','phone',)
+        fields = ('vendor_name','description','address','city','state','zip','website','email','phone')
 
 
 class ProductForm(forms.ModelForm):
@@ -17,7 +17,7 @@ class ProductForm(forms.ModelForm):
     # vendor_id = forms.ModelChoiceField(queryset=Vendor.objects.get(id=vendor_id))
     class Meta:
         model = Product
-        fields = ('name','description','price','item_count','category', 'vendor')
+        fields = ('name','description','price','item_count','category',)
 
         # widget = { 'category' : category}
 

@@ -40,14 +40,32 @@ def product(request, product_id):
 
 ##### CREATE PRODUCT ROUTE
 def post_product(request, vendor_id):
-    form = ProductForm(request.POST)
-    vendor = Vendor.objects.get(id=vendor_id)
-    # method on the form object
-    if form.is_valid():
-        product = form.save(commit = False)
-        product.vendor = request.vendor
-        product.save()
-    return HttpResponseRedirect('/')
+    print('posting product')
+    if request.method == 'POST':
+        form = ProductForm(request.POST)
+        vendor = Vendor.objects.get(pk=vendor_id)
+        # method on the form object
+        print(vendor)
+        if form.is_valid():
+            print('form valid')
+            product = form.save(commit = False)
+            product.vendor_id = int(vendor.id)
+            print(product.vendor_id)
+            product.save()
+            print('saved')
+            return HttpResponseRedirect('/')
+        else:
+            form = ProductForm()
+            return render(request, 'tbeystore/vendor.html', {
+                'form':form,
+                'error_message': "Form is not valid."
+            })
+    else:
+        form = LoginForm()
+        return render(request, 'tbeystore/login.html', {
+            'form':form,
+            'error_message': "Something when wrong. Make sure you're signed in."
+        })
 
 ##### PROFILE ROUTE
 def profile(request, user_name):
@@ -67,23 +85,41 @@ def vendor(request, vendor_id):
     return render(request, 'tbeystore/vendor.html', {'vendor':vendor, 'products':products, 'form':form})
     # return render(request, 'tbeystore/vendor.html', {'vendor':vendor, 'form':form})
 
+
+# question = get_object_or_404(Question, pk=question_id)
+#     try:
+#         selected_choice = question.choice_set.get(pk=request.POST['choice'])
+#     except (KeyError, Choice.DoesNotExist):
+#         # redisplay the question voting form
+#         return render(request, 'polls/detail.html', {
+#             'question': question,
+#             'error_message': "You didn't select a choice."
+#         })
+#     else:
+#         selected_choice.votes += 1
+#         selected_choice.save()
+#         # always return an HttpResponseRedirect after successfull POSTing data
+#         return HttpResponseRedirect(reverse('polls:results', args=(question_id,)))
+
+
+
 def vendor_signup(request, user_id):
     if request.method == 'POST':
         print('posting')
+        user = User.objects.get(pk=user_id)
         form = VendorForm(request.POST)
-        user = User.objects.get(id=user_id)
-        # user_id = request.GET.get(id=user_id)
-        print(user.id)
+        print(user)
+        # print(user.id)
         if user is not None:
             if user.is_active:
-                form.user_id = request.user.id
-                print('we are posting a vendor')
-                print(form.user_id)
                 if form.is_valid():
                     print('form is valid')
                     # clean form
-                    vendor = form.save()
+                    vendor = form.save(commit = False)
+                    vendor.user_id = request.user.id
+                    print(vendor.user_id)
                     vendor.save()
+                    print('saved')
                     return HttpResponseRedirect('/')
                 else:
                     print('from is not valid')
