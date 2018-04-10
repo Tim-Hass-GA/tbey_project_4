@@ -13,9 +13,10 @@ to the app (subfolder of templates) -->
       <li>Category: {{product.category}}</li>
       <li>Description: {{product.description}}</li>
       <li>Price: ${{product.price}}</li>
-      <li>Vendor: {{product.vendor_id}}</li>
-      <!-- <a href="/user/{{product.vendor.vendor_name}}">
-      <p>Adobed By: {{ product.user.username }}</p></a> -->
+      <li>
+        <a href="vendor/{{ product.vendor_id }}/">
+        Vendor: {{ product.vendor_id }}</a>
+      </li>
       <li>Item Count: {{product.item_count}}</li>
       <li>Date Added: {{product.date_added}}</li>
     </ul>
@@ -27,7 +28,7 @@ to the app (subfolder of templates) -->
     {% endfor %}
 
   </div>
-  <div class="new_product_form col s12 m6">
+  <div class="something_here col s12 m6">
     <h2> something here </h2>
     <!-- <form class="" action="post_cat/" method="post">
       {% csrf_token %}

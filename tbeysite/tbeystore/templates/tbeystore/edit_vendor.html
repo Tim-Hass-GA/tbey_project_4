@@ -2,12 +2,12 @@
 {% load staticfiles %}
 <!-- {% load static %} -->
 {% block content %}
-<div class="vendor_update_form col s12 m6">
+<div class="vendor_update col s12 m6">
   <h3> Edit Vendor Profile </h3>
-  <!-- <form class="" action="/{{ cat.id}}/edit/" method="post">
+  <form class="vendor_update_form" action="/{{ vendor.id}}/edit_vendor/" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="submit"/>
-  </form> -->
+    <input type="submit" class="btn yellow" value="submit"/>
+  </form>
 </div>
 {% endblock %}

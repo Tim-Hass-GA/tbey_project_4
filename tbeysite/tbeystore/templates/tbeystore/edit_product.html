@@ -3,11 +3,11 @@
 <!-- {% load static %} -->
 {% block content %}
   <div class="product_update_form col s12 m6">
-    <h3> Edit this cat </h3>
-    <!-- <form class="" action="/{{ cat.id}}/edit/" method="post">
+    <h3> Edit this product </h3>
+    <form class="" action="/{{ product.id}}/edit/" method="post">
       {% csrf_token %}
       {{ form.as_p }}
-      <input type="submit" value="submit"/>
-    </form> -->
+      <input type="submit" class="btn yellow" value="submit"/>
+    </form>
   </div>
 {% endblock %}

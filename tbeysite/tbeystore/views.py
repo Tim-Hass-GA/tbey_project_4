@@ -94,13 +94,16 @@ def post_product(request, vendor_id):
 
 ##### PRODUCT PUT ROUTE
 ## TODO: add conditional for users ...............
-# def edit_cat(request, cat_id):
-#     instance = get_object_or_404(Cat, id=cat_id)
-#     form = CatForm(request.POST or None, instance=instance)
-#     if form.is_valid():
-#         form.save()
-#         return redirect('show', cat_id)
-#     return render(request, 'edit_cat.html', {'cat':instance, 'form':form})
+def edit_product(request, product_id):
+    instance = get_object_or_404(Product, id=product_id)
+    form = ProductForm(request.POST or None, instance=instance)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+            # return redirect('product', product_id)
+    else:
+        return render(request, 'tbeystore/edit_product.html', {'product':instance, 'form':form})
 
 ##### PRODUCT DELETE ROUTE
 ## TODO: add conditional for users ...............
@@ -194,13 +197,14 @@ def vendor_signup(request, user_id):
 
 ##### VENDOR PUT ROUTE
 ## TODO: add conditional for users ...............
-# def edit_cat(request, cat_id):
-#     instance = get_object_or_404(Cat, id=cat_id)
-#     form = CatForm(request.POST or None, instance=instance)
-#     if form.is_valid():
-#         form.save()
-#         return redirect('show', cat_id)
-#     return render(request, 'edit_cat.html', {'cat':instance, 'form':form})
+def edit_vendor(request, vendor_id):
+    instance = get_object_or_404(Vendor, id=vendor_id)
+    form = VendorForm(request.POST or None, instance=instance)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+    return render(request, 'tbeystore/edit_vendor.html', {'vendor':instance, 'form':form})
 
 ##### VENDOR DELETE ROUTE
 ## TODO: add conditional for users ...............

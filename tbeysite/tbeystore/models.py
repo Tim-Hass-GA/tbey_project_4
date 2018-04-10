@@ -74,15 +74,6 @@ class Comments(models.Model):
         return now - datetime.timedelta(days=10) <= self.date_added <= now
 
 
-# VENDOR PRODUCT CLASS #
-# class Vendor_Product(models.Model):
-#     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-
-    # def __str__(self):
-    # return self.name
-
-
 # ORDER CLASS #
 class Product_Order(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

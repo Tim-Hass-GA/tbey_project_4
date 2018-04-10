@@ -1,6 +1,13 @@
 h1.logo {
   /* font-family: 'Monofett', cursive; */
   font-family: 'Londrina Sketch', cursive;
-  color: pink;
+  color: 000;
   font-size: 8rem;
+  width: 90%;
+  margin: 0 auto;
 }
+
+/* .product_list {
+  height: 80%;
+  overflow-y: scroll;
+} */
