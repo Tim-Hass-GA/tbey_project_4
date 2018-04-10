@@ -4,10 +4,10 @@
 {% block content %}
   <div class="product_update_form col s12 m6">
     <h3> Edit this product </h3>
-    <form class="" action="/{{ product.id}}/edit/" method="post">
+    <form class="" action="/{{ product.id}}/edit_product/" method="post">
       {% csrf_token %}
       {{ form.as_p }}
-      <input type="submit" class="btn yellow" value="submit"/>
+      <input type="submit" class="btn green" value="submit"/>
     </form>
   </div>
 {% endblock %}

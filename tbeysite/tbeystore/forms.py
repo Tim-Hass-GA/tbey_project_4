@@ -1,34 +1,26 @@
 from django import forms
-from .models import Vendor, Question, Product, Category
+from .models import Vendor, Question, Product, Category, Product_Order
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelChoiceField
 # special extention
 
 class VendorForm(forms.ModelForm):
-    # user = forms.ModelChoiceField(queryset=User.objects.get(id=user_id))
     class Meta:
         model = Vendor
         fields = ('vendor_name','description','address','city','state','zip','website','email','phone')
 
 
 class ProductForm(forms.ModelForm):
-    # category = forms.ModelChoiceField(queryset=Category.objects.all())
-    # vendor_id = forms.ModelChoiceField(queryset=Vendor.objects.get(id=vendor_id))
     class Meta:
         model = Product
         fields = ('name','description','price','item_count','category',)
 
-        # widget = { 'category' : category}
 
-# class ToyForm(forms.ModelForm):
-#     class Meta:
-#         model = Toy
-#         fields = ('name',)
-
-# Creating a form to change an existing article.
-# >>> article = Article.objects.get(pk=1)
-# >>> form = ArticleForm(instance=article)
+class ProductOrderForm(forms.ModelForm):
+    class Meta:
+        model = Product_Order
+        fields = ('product', 'order_count', 'payment',)
 
 class LoginForm(forms.Form):
     username = forms.CharField(label="User Name", max_length=64)

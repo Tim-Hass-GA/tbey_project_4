@@ -7,7 +7,7 @@
   <form class="vendor_update_form" action="/{{ vendor.id}}/edit_vendor/" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" class="btn yellow" value="submit"/>
+    <input type="submit" class="btn green" value="submit"/>
   </form>
 </div>
 {% endblock %}

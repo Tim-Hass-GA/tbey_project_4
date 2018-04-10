@@ -93,7 +93,6 @@ def post_product(request, vendor_id):
         })
 
 ##### PRODUCT PUT ROUTE
-## TODO: add conditional for users ...............
 def edit_product(request, product_id):
     instance = get_object_or_404(Product, id=product_id)
     form = ProductForm(request.POST or None, instance=instance)
@@ -105,13 +104,43 @@ def edit_product(request, product_id):
     else:
         return render(request, 'tbeystore/edit_product.html', {'product':instance, 'form':form})
 
+
 ##### PRODUCT DELETE ROUTE
-## TODO: add conditional for users ...............
 def delete_product(request, product_id):
     if request.method == 'POST':
         instance = Product.objects.get(pk=product_id)
         instance.delete()
         return redirect('/')
+
+
+##### CREATE PRODUCT ORDER ROUTE
+
+
+
+# def create_order(request, product_id):
+#     form = ToyForm(request.POST)
+#     if form.is_valid():
+#         # if we have good POST data
+#         # see if there is a toy with this name
+#         try:
+#             toy = Toy.objects.get(name=form.data.get('name'))
+#         except:
+#             toy = None
+#         #if no toy by that name exists save it to the database
+#         if toy is None:
+#             toy = form.save()
+#         cat = Cat.objects.get(pk=cat_id)
+#         toy.cats.add(cat)
+#         return redirect('show_toy', toy.id)
+#     else:
+#         return redirect('show', cat_id)
+
+##### SHOW TOY ROUTE
+# def show_toy(request, toy_id):
+#     toy = Toy.objects.get(pk=toy_id)
+#     cats = toy.cats.all()
+#     return render(request, 'show_toy.html', {'toy': toy, 'cats':cats})
+
 
 ##### LIKE PRODUCT ROUTE
 ## TODO: add conditional for users ...............
@@ -128,8 +157,6 @@ def like_product(request):
     return HttpResponse(likes)
 
 
-
-
 #### VENDOR ####
 ##### VENDOR PROFILE ROUTE
 def vendor(request, vendor_id):
@@ -142,7 +169,6 @@ def vendor(request, vendor_id):
     # return render(request, 'tbeystore/vendor.html', {'vendor':vendor , 'user':vendor_owner})
     return render(request, 'tbeystore/vendor.html', {'vendor':vendor, 'products':products, 'form':form})
     # return render(request, 'tbeystore/vendor.html', {'vendor':vendor, 'form':form})
-
 
 
 # question = get_object_or_404(Question, pk=question_id)
@@ -160,8 +186,7 @@ def vendor(request, vendor_id):
 #         # always return an HttpResponseRedirect after successfull POSTing data
 #         return HttpResponseRedirect(reverse('polls:results', args=(question_id,)))
 
-
-
+##### VENDOR SIGN UP ROUTE
 def vendor_signup(request, user_id):
     if request.method == 'POST':
         print('posting')
@@ -196,7 +221,6 @@ def vendor_signup(request, user_id):
 
 
 ##### VENDOR PUT ROUTE
-## TODO: add conditional for users ...............
 def edit_vendor(request, vendor_id):
     instance = get_object_or_404(Vendor, id=vendor_id)
     form = VendorForm(request.POST or None, instance=instance)
@@ -207,15 +231,11 @@ def edit_vendor(request, vendor_id):
     return render(request, 'tbeystore/edit_vendor.html', {'vendor':instance, 'form':form})
 
 ##### VENDOR DELETE ROUTE
-## TODO: add conditional for users ...............
 def delete_vendor(request, vendor_id):
     if request.method == 'POST':
         instance = Vendor.objects.get(pk=vendor_id)
         instance.delete()
         return redirect('/')
-
-
-
 
 
 #### USER ###
@@ -283,36 +303,6 @@ def signup(request):
         return render(request, 'tbeystore/signup.html', {'form':form})
 
 
-
-
-
-
-
-##### CREATE TOY ROUTE
-# def create_toy(request, cat_id):
-#     form = ToyForm(request.POST)
-#     if form.is_valid():
-#         # if we have good POST data
-#         # see if there is a toy with this name
-#         try:
-#             toy = Toy.objects.get(name=form.data.get('name'))
-#         except:
-#             toy = None
-#         #if no toy by that name exists save it to the database
-#         if toy is None:
-#             toy = form.save()
-#         cat = Cat.objects.get(pk=cat_id)
-#         toy.cats.add(cat)
-#         return redirect('show_toy', toy.id)
-#     else:
-#         return redirect('show', cat_id)
-
-##### SHOW TOY ROUTE
-# def show_toy(request, toy_id):
-#     toy = Toy.objects.get(pk=toy_id)
-#     cats = toy.cats.all()
-#     return render(request, 'show_toy.html', {'toy': toy, 'cats':cats})
-
 ### API ROUTE
 # requests is a thing....for api calls
 def api(request):
@@ -324,13 +314,13 @@ def api(request):
 
 ############
 # Create your views here.
-
 # Question “index” page – displays the latest few questions.
 # Question “detail” page – displays a question text, with no results but with a form to vote.
 # Question “results” page – displays results for a particular question.
 # Vote action – handles voting for a particular choice in a particular question.
 # In other words, your template should be at polls/templates/polls/index.html
 
+##### _QUESTION ROUTE
 class QuestionIndexView(generic.ListView):
     template_name = 'tbeystore/question.html'
     context_object_name = 'latest_question_list'
@@ -346,6 +336,7 @@ class QuestionIndexView(generic.ListView):
         # ).order_by('-pub_date')[:5]
         # return Question.objects.order_by('-pub_date')[:5]
 
+##### _QUESTION DETAIL ROUTE
 class QuestionDetailView(generic.DetailView):
     model = Question
     template_name = 'tbeystore/question_detail.html'
@@ -353,10 +344,12 @@ class QuestionDetailView(generic.DetailView):
     def get_queryset(self):
         return Question.objects.filter(pub_date__lte=timezone.now())
 
+##### _QUESTION RESULTS ROUTE
 class QuestionResultsView(generic.DetailView):
     model = Question
     template_name = 'tbeystore/question_results.html'
 
+##### _QUESTION VOTE ROUTE
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
@@ -372,33 +365,3 @@ def vote(request, question_id):
         selected_choice.save()
         # always return an HttpResponseRedirect after successfull POSTing data
         return HttpResponseRedirect(reverse('tbeystore:question_results', args=(question_id,)))
-
-
-# refactor ----
-# def index(request):
-#     latest_question_list = Question.objects.order_by('-pub_date')[:5]
-#     context = {'latest_question_list':latest_question_list}
-#     return render(request, 'polls/index.html', context)
-#
-# def detail(request, question_id):
-#     question = get_object_or_404(Question, pk=question_id)
-#     return render(request, 'polls/detail.html', {'question':question})
-#
-# def results(request, question_id):
-#     question = get_object_or_404(Question, pk=question_id)
-#     return render(request, 'polls/results.html', {'question':question})
-
-
-# - index
-##########   -- refactor 3
-# latest_question_list = Question.objects.order_by('-pub_date')[:5]
-##########   -- refactor 2
-# # output = ', '.join([q.question_text for q in latest_question_list])
-##########
-# template = loader.get_template('polls/index.html')
-# context = {
-#     'latest_question_list':latest_question_list,
-# }
-# return HttpResponse(template.render(context, request))
-##########   -- refactor 1
-# return HttpResponse("Hello, world. You're at the polls index.")
