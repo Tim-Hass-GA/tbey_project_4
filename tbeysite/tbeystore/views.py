@@ -20,8 +20,6 @@ import requests
 ##### GET HOME ROUTE
 
 
-
-
 # class QuestionIndexView(generic.ListView):
 #     template_name = 'tbeystore/question.html'
 #     context_object_name = 'latest_question_list'
@@ -46,26 +44,23 @@ import requests
 # return render(request, 'polls/detail.html', {'question':question})
 
 
-
-
 def index(request):
     vendors = Vendor.objects.all()
     products = Product.objects.all()
-    # form = CatForm()
+    # products = Product.objects.all()
     return render(request, 'tbeystore/index.html', {'vendors':vendors, 'products':products})
-    # render(request template context)
-    # return HttpResponse("Hello, world. You're at the polls index.")
+
 
 ##### SHOW PRODUCT ROUTE
 def product(request, product_id):
     product = Product.objects.get(id=product_id)
-    question = Question.objects.filter(product_id=product_id)
+    questions = Question.objects.filter(product_id=product_id)
     # form = QuestionForm()
 #     # payload = {'key':'TOKEN'}
 #     res = requests.get('http://thecatapi.com/api/images/get')
 #     # res = requests.get('http://thecatapi.com/api/images/get', params=payload)
 #     # return render(request, 'api.html', {'imageurl':res.url})
-    return render(request, 'tbeystore/product.html', {'product':product, 'question':question})
+    return render(request, 'tbeystore/product.html', {'product':product, 'questions':questions})
     # return render(request, 'tbeystore/product.html', {'product':product, 'category':category})
 
 ##### CREATE PRODUCT ROUTE
@@ -109,11 +104,11 @@ def post_product(request, vendor_id):
 
 ##### PRODUCT DELETE ROUTE
 ## TODO: add conditional for users ...............
-# def delete_cat(request, cat_id):
-#     if request.method == 'POST':
-#         instance = Cat.objects.get(pk=cat_id)
-#         instance.delete()
-#         return redirect('index')
+def delete_product(request, product_id):
+    if request.method == 'POST':
+        instance = Product.objects.get(pk=product_id)
+        instance.delete()
+        return redirect('/')
 
 ##### LIKE PRODUCT ROUTE
 ## TODO: add conditional for users ...............
@@ -144,7 +139,6 @@ def vendor(request, vendor_id):
     # return render(request, 'tbeystore/vendor.html', {'vendor':vendor , 'user':vendor_owner})
     return render(request, 'tbeystore/vendor.html', {'vendor':vendor, 'products':products, 'form':form})
     # return render(request, 'tbeystore/vendor.html', {'vendor':vendor, 'form':form})
-
 
 
 
@@ -210,11 +204,11 @@ def vendor_signup(request, user_id):
 
 ##### VENDOR DELETE ROUTE
 ## TODO: add conditional for users ...............
-# def delete_cat(request, cat_id):
-#     if request.method == 'POST':
-#         instance = Cat.objects.get(pk=cat_id)
-#         instance.delete()
-#         return redirect('index')
+def delete_vendor(request, vendor_id):
+    if request.method == 'POST':
+        instance = Vendor.objects.get(pk=vendor_id)
+        instance.delete()
+        return redirect('/')
 
 
 

@@ -30,6 +30,11 @@ class Category(models.Model):
     description = models.CharField(max_length=250)
     date_added = models.DateField('date added', default=timezone.now)
 
+    class Meta:
+        # ordering = ('name',)
+        verbose_name = 'category'
+        verbose_name_plural = 'categories'
+
     def __str__(self):
         return self.name
     def was_recently_added(self):
@@ -44,8 +49,13 @@ class Product(models.Model):
     date_added = models.DateTimeField('date added', default=timezone.now)
     item_count = models.PositiveIntegerField(default=0)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    available = models.BooleanField(default=True)
+    # image = models.ImageField(upload_to='tbeystore/static/tbeystore/images/products', blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
+
+    # class Meta:
+    #     ordering = ('-created',)
 
     def __str__(self):
         return self.name
@@ -65,19 +75,20 @@ class Comments(models.Model):
 
 
 # VENDOR PRODUCT CLASS #
-class Vendor_Product(models.Model):
-    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+# class Vendor_Product(models.Model):
+#     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
     # def __str__(self):
     # return self.name
 
 
-# ORDER CLASS #       DO ME
-# class Product_Order(models.Model):
-#     user = models.OneToOneField(User)
-#     product = models.ManyToManyField(Product)
-#     item_count = models.PositiveIntegerField()
+# ORDER CLASS #
+class Product_Order(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    product = models.OneToOneField(Product, on_delete=models.CASCADE)
+    order_count = models.PositiveIntegerField()
+    payment = models.CharField(max_length=200, default="placeholder")
 
 
 # _QUESTION CLASS #

@@ -4,11 +4,10 @@
 
 {% block content %}
   <div class="product_list  col s12 m6">
-    <!-- <a href="/user/{{cat.user.username}}"> -->
-    <!-- <p>Product Details</p></a> -->
     <a href="/{{product.id}}">
     <h3>{{product.name}}</h3>
     </a>
+
     <a href="/vendor/{{product.vendor.id}}/">
     <p>Added By: {{ product.vendor }}</p></a>
 
@@ -16,43 +15,23 @@
       <li>Category: {{product.category}}</li>
       <li>Description: {{product.description}}</li>
       <li>Price: ${{product.price}}</li>
-      <li>vendor: {{product.vendor}}</li>
+      <li>Vendor: {{product.vendor}}</li>
       <li>Item Count: {{product.item_count}}</li>
       <li>Date Added: {{product.date_added}}</li>
-
     </ul>
-    <h3>Likes:</h3>
-
-    <a class="waves-effect waves-light btn like" data-id="{{product.id}}">
-      Likes: {% if product.likes > 0 %} {{ product.likes }} {% else %} None {% endif %}
-    </a>
+      <!-- <h5>Likes:</h5> -->
+      <a class="waves-effect waves-light btn like" data-id="{{product.id}}">
+        Likes: {% if product.likes > 0 %} {{ product.likes }} {% else %} None {% endif %}
+      </a>
     <hr/>
-    <!-- <h5> Product Questions </h5> -->
-
-    <!-- <form class="toy_form" action="/{{ cat.id }}/toy/create/" method="post">
-      {% csrf_token %}
-      {{ form }}
-      <input type="submit"  value="Add Toy">
-    </form>
-    <form class="delete_form" action="/{{ cat.id }}/destroy/" method="post">
-      {% csrf_token %}
-      <input type="submit"  value="Destroy">
-    </form> -->
-
   </div>
   <div class="product_questions col s12 m6">
     <div class="questions">
-      <h3> Product Questions </h3>
-      {{ question }}
+      <!-- <h3> Product Questions </h3> -->
+      <!-- <img src="/{{product.image}}" alt=""> -->
 
-
-      <!-- {% if question.product_id %}
-      <li>Question: {{cat.age}}</li>
-      {% else %}
-      <li>Kitten</li>
-      {% endif %} -->
-
-
+      <!-- <h3> Product Questions </h3> -->
+      <!-- {{ questions.html }} -->
       {% if question %}
         <ul>
           {% for question in latest_question_list %}
@@ -62,7 +41,7 @@
             {% endfor %}
         </ul>
       {% else %}
-        <p>No polls are available.</p>
+        <p>This section is not completed.</p>
       {% endif %}
     </div>
   </div>

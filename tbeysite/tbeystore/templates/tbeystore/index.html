@@ -19,7 +19,7 @@ to the app (subfolder of templates) -->
       <li>Item Count: {{product.item_count}}</li>
       <li>Date Added: {{product.date_added}}</li>
     </ul>
-    <h4>Likes:</h4>
+    <!-- <h5>Likes:</h5> -->
     <a class="waves-effect waves-light btn like" data-id="{{product.id}}">
       Likes: {% if product.likes > 0 %} {{ product.likes }} {% else %} None {% endif %}
     </a>

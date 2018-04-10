@@ -1,7 +1,6 @@
 {% extends 'tbeystore/base.html' %}
 {% block content %}
   <div class="profile  col s12 m6">
-    <!-- <h2>Collection of cats (/ᐠ｡▿｡ᐟ\):</h2> -->
     <h2>{{ username }}'s Profile:</h2>
     <a href="/{{ user.id }}">
       <h3>Name: {{user.first_name}}</h3>
@@ -13,11 +12,5 @@
       <li>Last Login: {{user.last_login}}</li>
       <li>Date Joined: {{user.date_joined}}</li>
     </ul>
-    <!-- {% if user.vendor_id > 0 %}
-      <li>Vendor Name: {{vendor.vendor_name}}</li>
-    {% else %} -->
-      <li>Become a vendor</li>
-      <a href="{% url 'tbeystore:vendor_signup' user.id %}">Vendor Signup</a>
-    <!-- {% endif %} -->
   </div>
 {% endblock %}
