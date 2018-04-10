@@ -6,18 +6,18 @@ from django.forms import ModelChoiceField
 # special extention
 
 class VendorForm(forms.ModelForm):
-
+    # user = forms.ModelChoiceField(queryset=User.objects.get(id=user_id))
     class Meta:
         model = Vendor
-        fields = ('vendor_name','description','address','city','state','zip','website','email','phone',)
+        fields = ('user','vendor_name','description','address','city','state','zip','website','email','phone',)
 
 
 class ProductForm(forms.ModelForm):
-    category = forms.ModelChoiceField(queryset=Category.objects.all())
-    # category = forms.ModelChoiceField(queryset=Category.objects.all(), to_field_name="name")
+    # category = forms.ModelChoiceField(queryset=Category.objects.all())
+    # vendor_id = forms.ModelChoiceField(queryset=Vendor.objects.get(id=vendor_id))
     class Meta:
         model = Product
-        fields = ('name','description','price','item_count','category')
+        fields = ('name','description','price','item_count','category', 'vendor')
 
         # widget = { 'category' : category}
 

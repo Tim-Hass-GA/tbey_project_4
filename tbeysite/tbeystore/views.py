@@ -29,13 +29,14 @@ def index(request):
 ##### SHOW PRODUCT ROUTE
 def product(request, product_id):
     product = Product.objects.get(id=product_id)
-    category = Category.objects.all()
-#     form = QuestionForm()
+    question = Question.objects.filter(product_id=product_id)
+    # form = QuestionForm()
 #     # payload = {'key':'TOKEN'}
 #     res = requests.get('http://thecatapi.com/api/images/get')
 #     # res = requests.get('http://thecatapi.com/api/images/get', params=payload)
 #     # return render(request, 'api.html', {'imageurl':res.url})
-    return render(request, 'tbeystore/product.html', {'product':product, 'category':category})
+    return render(request, 'tbeystore/product.html', {'product':product, 'question':question})
+    # return render(request, 'tbeystore/product.html', {'product':product, 'category':category})
 
 ##### CREATE PRODUCT ROUTE
 def post_product(request, vendor_id):
@@ -241,6 +242,9 @@ class QuestionIndexView(generic.ListView):
         return Question.objects.filter(
             pub_date__lte=timezone.now()
         ).order_by('-pub_date')[:5]
+        # return Question.objects.filter(
+        #     pub_date__lte=timezone.now()
+        # ).order_by('-pub_date')[:5]
         # return Question.objects.order_by('-pub_date')[:5]
 
 class QuestionDetailView(generic.DetailView):

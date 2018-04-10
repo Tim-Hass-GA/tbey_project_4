@@ -38,11 +38,11 @@ class Category(models.Model):
 
 # PRODUCT CLASS #
 class Product(models.Model):
-    likes = models.IntegerField(default=0)
+    likes = models.PositiveIntegerField(default=0)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=250)
     date_added = models.DateTimeField('date added', default=timezone.now)
-    item_count = models.IntegerField(default=0)
+    item_count = models.PositiveIntegerField(default=0)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)

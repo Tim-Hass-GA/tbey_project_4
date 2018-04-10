@@ -19,12 +19,7 @@
       <li>vendor: {{product.vendor}}</li>
       <li>Item Count: {{product.item_count}}</li>
       <li>Date Added: {{product.date_added}}</li>
-      <!-- <li>Breed: {{cat.breed}}</li>
-      {% if cat.age > 0 %}
-      <li>Age: {{cat.age}}</li>
-      {% else %}
-      <li>Kitten</li>
-      {% endif %} -->
+
     </ul>
     <h3>Likes:</h3>
 
@@ -32,7 +27,7 @@
       Likes: {% if product.likes > 0 %} {{ product.likes }} {% else %} None {% endif %}
     </a>
     <hr/>
-    <h5> Product Options </h5>
+    <!-- <h5> Product Questions </h5> -->
 
     <!-- <form class="toy_form" action="/{{ cat.id }}/toy/create/" method="post">
       {% csrf_token %}
@@ -45,10 +40,30 @@
     </form> -->
 
   </div>
-  <div class="product_image">
-    <div class="product_image col s12 m6">
-      <h3> Product </h3>
-      <!-- <img src="{{ imageurl }}" alt="a random cat image"/> -->
+  <div class="product_questions col s12 m6">
+    <div class="questions">
+      <h3> Product Questions </h3>
+      {{ question }}
+
+
+      <!-- {% if question.product_id %}
+      <li>Question: {{cat.age}}</li>
+      {% else %}
+      <li>Kitten</li>
+      {% endif %} -->
+
+
+      {% if question %}
+        <ul>
+          {% for question in latest_question_list %}
+            <li>
+              <a href="{% url 'tbeystore:question_detail' question.id %}">{{ question.question_text }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+      {% else %}
+        <p>No polls are available.</p>
+      {% endif %}
     </div>
   </div>
 {% endblock %}
