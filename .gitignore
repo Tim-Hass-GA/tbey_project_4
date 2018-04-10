@@ -1,6 +1,7 @@
 
-tbeystore/__pycache__/
-tbeystore/migrations/
+
+.tbeysite/tbeystore/__pycache__/
+.tbeysite/tbeystore/migrations/
 
 # Created by https://www.gitignore.io
 
