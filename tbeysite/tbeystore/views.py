@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Vendor, Question, Choice, Product, Category
-from .forms import LoginForm, SignUpForm, ProductForm, VendorForm
+from .models import Vendor, Question, Choice, Product, Category, Product_Order, Order
+from .forms import LoginForm, SignUpForm, ProductForm, VendorForm, ProductOrderForm
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
@@ -49,7 +49,6 @@ def index(request):
     products = Product.objects.all()
     # products = Product.objects.all()
     return render(request, 'tbeystore/index.html', {'vendors':vendors, 'products':products})
-
 
 ##### SHOW PRODUCT ROUTE
 def product(request, product_id):
@@ -104,6 +103,19 @@ def edit_product(request, product_id):
     else:
         return render(request, 'tbeystore/edit_product.html', {'product':instance, 'form':form})
 
+##### LIKE PRODUCT ROUTE
+## TODO: add conditional for users ...............
+def like_product(request):
+    # print('like product view')
+    product_id = request.GET.get('product_id', None)
+    likes = 0
+    if (product_id):
+        product = Product.objects.get(id=int(product_id))
+        if product is not None:
+            likes = product.likes + 1
+            product.likes = likes
+            product.save()
+    return HttpResponse(likes)
 
 ##### PRODUCT DELETE ROUTE
 def delete_product(request, product_id):
@@ -114,8 +126,67 @@ def delete_product(request, product_id):
 
 
 ##### CREATE PRODUCT ORDER ROUTE
+# class CreateOrderView(generic.ListView):
+#     model = Order
+#     template_name = 'tbeystore/order.html'
+#
+#     def get_queryset(self):
+#         return Order.objects.filter()
 
+def add_to_order(request, product_id, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    print(user,'in add_to_order....')
+    try:
+        # selected_choice = Product.get(pk=request.POST['product'])
+        product_item = get_object_or_404(Product, pk=product_id)
+        print(product_item)
+        if product_item.item_count != 0 and product_item.available:
+            order_form = ProductOrderForm(request.POST)
+            # order_form = ProductOrderForm(request.POST or None, instance=product_item)
+            # associate order_form to user and product
+            # order_form.user_id = int(user.id)
+            print('order_form product')
+            print(product_item.id)
+            print(order_form)
+            order_form.product = int(product_item.id)
+            print('order_form vendor')
+            print(product_item.vendor_id)
+            order_form.vendor = int(product_item.vendor_id)
+            print(order_form.vendor)
+            # order_form.payment = 'not right now'
+            if order_form.is_valid():
+                print('saving order_form...')
+                # save back into products
+                product.item_count -= 1
+                product.save()
+                order_form.save()
+                return render(request, 'tbeystore/product.html', {
+                    'product': product,
+                    'error_message': "Order Saved."
+                })
+            else:
+                return render(request, 'tbeystore/product.html', {
+                    'product': product_item,
+                    'error_message': "Something when wrong in your order."
+                })
+        else:
+            return render(request, 'tbeystore/product.html', {
+                'product': product,
+                'error_message': "Product is not available."
+            })
 
+    except (KeyError, Product.DoesNotExist):
+        # redisplay the question voting form
+
+        return render(request, 'tbeystore/product.html', {
+            'product': product,
+            'error_message': "This item doesn't exist."
+        })
+    else:
+
+        print('hit else add_to_order')
+        # always return an HttpResponseRedirect after successfull POSTing data
+        return HttpResponseRedirect(reverse('tbeystore:product', args=(product_id,)))
 
 # def create_order(request, product_id):
 #     form = ToyForm(request.POST)
@@ -142,20 +213,6 @@ def delete_product(request, product_id):
 #     return render(request, 'show_toy.html', {'toy': toy, 'cats':cats})
 
 
-##### LIKE PRODUCT ROUTE
-## TODO: add conditional for users ...............
-def like_product(request):
-    # print('like product view')
-    product_id = request.GET.get('product_id', None)
-    likes = 0
-    if (product_id):
-        product = Product.objects.get(id=int(product_id))
-        if product is not None:
-            likes = product.likes + 1
-            product.likes = likes
-            product.save()
-    return HttpResponse(likes)
-
 
 #### VENDOR ####
 ##### VENDOR PROFILE ROUTE
@@ -169,7 +226,6 @@ def vendor(request, vendor_id):
     # return render(request, 'tbeystore/vendor.html', {'vendor':vendor , 'user':vendor_owner})
     return render(request, 'tbeystore/vendor.html', {'vendor':vendor, 'products':products, 'form':form})
     # return render(request, 'tbeystore/vendor.html', {'vendor':vendor, 'form':form})
-
 
 # question = get_object_or_404(Question, pk=question_id)
 #     try:
@@ -237,9 +293,7 @@ def delete_vendor(request, vendor_id):
         instance.delete()
         return redirect('/')
 
-
-#### USER ###
-##### PROFILE ROUTE
+#### USER PROFILE ROUTE
 def profile(request, user_name):
     user = User.objects.get(username=user_name)
     # vendor = Vendor.objects.filter(user=user)
@@ -303,38 +357,28 @@ def signup(request):
         return render(request, 'tbeystore/signup.html', {'form':form})
 
 
-### API ROUTE
-# requests is a thing....for api calls
-def api(request):
-    # payload = {'key':'TOKEN'}
-    res = requests.get('http://thecatapi.com/api/images/get')
-    # res = requests.get('http://thecatapi.com/api/images/get', params=payload)
-    return render(request, 'tbeystore/adverts.html', {'imageurl':res.url})
+############ TODO: add these routes
+##### _COMMENTS and _QUESTION ROUTE
+class CommentsIndexView(generic.ListView):
+    template_name = 'tbeystore/comments.html'
+    context_object_name = 'Product'
 
+    def get_queryset(self):
+        # comments on products
+        return HttpResponse("i need to be created")
 
-############
-# Create your views here.
-# Question “index” page – displays the latest few questions.
-# Question “detail” page – displays a question text, with no results but with a form to vote.
-# Question “results” page – displays results for a particular question.
-# Vote action – handles voting for a particular choice in a particular question.
-# In other words, your template should be at polls/templates/polls/index.html
-
-##### _QUESTION ROUTE
+############ TODO: Questions for users and vendors
+## users about products
+## vendors about user needs
 class QuestionIndexView(generic.ListView):
     template_name = 'tbeystore/question.html'
     context_object_name = 'latest_question_list'
 
     def get_queryset(self):
-        # Return the last 5 published questions
-        # not including those set for future publishing date
+        # Return questions about products
         return Question.objects.filter(
             pub_date__lte=timezone.now()
         ).order_by('-pub_date')[:5]
-        # return Question.objects.filter(
-        #     pub_date__lte=timezone.now()
-        # ).order_by('-pub_date')[:5]
-        # return Question.objects.order_by('-pub_date')[:5]
 
 ##### _QUESTION DETAIL ROUTE
 class QuestionDetailView(generic.DetailView):
@@ -365,3 +409,11 @@ def vote(request, question_id):
         selected_choice.save()
         # always return an HttpResponseRedirect after successfull POSTing data
         return HttpResponseRedirect(reverse('tbeystore:question_results', args=(question_id,)))
+
+### API ROUTE
+# requests is a thing....for api calls
+def api(request):
+    # payload = {'key':'TOKEN'}
+    res = requests.get('http://thecatapi.com/api/images/get')
+    # res = requests.get('http://thecatapi.com/api/images/get', params=payload)
+    return render(request, 'tbeystore/adverts.html', {'imageurl':res.url})

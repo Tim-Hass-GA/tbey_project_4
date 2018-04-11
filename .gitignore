@@ -1,6 +1,7 @@
 
 
 ./tbeysite/tbeystore/__pycache__/
+./tbeystore/migrations/
 ./tbeysite/tbeystore/migrations/
 ./tbeysite/tbeysite/settings.py
 

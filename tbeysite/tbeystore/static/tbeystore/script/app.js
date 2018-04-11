@@ -20,15 +20,18 @@ $('.like').on('click', function(event){
   })
 })
 
-// $('.edit_product').on('click', function(event){
+// $('.add_to_order').on('click', function(event){
 //   event.preventDefault();
 //   var element = $(this);
+//   console.log('add_to_order click');
+//   console.log(element.attr('data-id'))
 //   $.ajax({
-//     url: '/like_product/',
+//     url: '/add_to_order/',
 //     method: "GET",
 //     data: {product_id: element.attr('data-id')},
 //     success: function(response){
-//       element.html('Likes: ' + response);
+//       // element.html('Items Left: ' + response);
+//       console.log('success')
 //     }
 //   })
 // })

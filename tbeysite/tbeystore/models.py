@@ -75,11 +75,16 @@ class Comments(models.Model):
 
 
 # ORDER CLASS #
-class Product_Order(models.Model):
+class Order(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    product = models.OneToOneField(Product, on_delete=models.CASCADE)
-    order_count = models.PositiveIntegerField()
     payment = models.CharField(max_length=200, default="placeholder")
+
+
+class Product_Order(models.Model):
+    # vendor = models.OneToOneField(Vendor, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    # product_count = models.PositiveIntegerField()
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
 
 
 # _QUESTION CLASS #

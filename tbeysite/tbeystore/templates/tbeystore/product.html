@@ -23,6 +23,13 @@
       <a class="waves-effect waves-light btn like" data-id="{{product.id}}">
         Likes: {% if product.likes > 0 %} {{ product.likes }} {% else %} None {% endif %}
       </a>
+      <form class="" action="add_to_order/{{user.id}}/" method="post">
+        {% csrf_token %}
+        <input type="submit" class="btn green" value="Order"/>
+      </form>
+      <!-- <a class="waves-effect waves-light btn add_to_order" data-id="{{product.id}}">
+        Add to Cart: {% if product.item_count > 0 %} {{ product.item_count }} {% else %} None {% endif %}
+      </a> -->
     <hr/>
   </div>
   <div class="product_questions col s12 m6">

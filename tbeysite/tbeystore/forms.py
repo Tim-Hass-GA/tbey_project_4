@@ -1,5 +1,5 @@
 from django import forms
-from .models import Vendor, Question, Product, Category, Product_Order
+from .models import Vendor, Question, Product, Category, Product_Order, Order
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelChoiceField
@@ -20,7 +20,8 @@ class ProductForm(forms.ModelForm):
 class ProductOrderForm(forms.ModelForm):
     class Meta:
         model = Product_Order
-        fields = ('product', 'order_count', 'payment',)
+        fields = ('product', 'order')
+        # fields = ('product', 'vendor', 'product_count', 'order')
 
 class LoginForm(forms.Form):
     username = forms.CharField(label="User Name", max_length=64)
