@@ -50,6 +50,7 @@ class Product(models.Model):
     item_count = models.PositiveIntegerField(default=0)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     available = models.BooleanField(default=True)
+    # type = models.CharField(max_length=100)
     # image = models.ImageField(upload_to='tbeystore/static/tbeystore/images/products', blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
@@ -86,7 +87,7 @@ class Product_Order(models.Model):
     # vendor = models.OneToOneField(Vendor, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     # product_count = models.PositiveIntegerField()
-    # order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    # order_invoice = models.FileField(upload_to='tbeystore/static/tbeystore/user/invoice')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     payment = models.CharField(max_length=200, default="placeholder")
 

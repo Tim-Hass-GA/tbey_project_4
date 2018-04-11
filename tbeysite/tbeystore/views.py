@@ -140,7 +140,7 @@ def add_to_order(request, product_id, user_id):
         # selected_choice = Product.get(pk=request.POST['product'])
         product_item = get_object_or_404(Product, pk=product_id)
         print(product_item)
-        if product_item.item_count != 0 and product_item.available:
+        if product_item.item_count != 0 or product_item.available:
             #  if the item is available and count is greater than 1
             #  create an instance of the Product Order to temporarily save order
             order_product = Product_Order()
@@ -152,7 +152,8 @@ def add_to_order(request, product_id, user_id):
                 print('saving order_product...')
                 # reduce products inventory
                 # save back into products
-                product_item.item_count -= 1
+                if product_item.item_count != 0:
+                    product_item.item_count -= 1
                 product_item.save()
                 order_product.save()
                 return render(request, 'tbeystore/product.html', {
@@ -165,21 +166,18 @@ def add_to_order(request, product_id, user_id):
                     'error_message': "Something when wrong in your order."
                 })
         else:
-            print(error)
+            # print(error)
             return render(request, 'tbeystore/product.html', {
                 'product': product_item,
                 'error_message': "Product is not available."
             })
-
     except (KeyError, Product.DoesNotExist):
-        # redisplay the question voting form
-
+        # redisplay the product
         return render(request, 'tbeystore/product.html', {
             'product': product_item,
             'error_message': "This item doesn't exist."
         })
     else:
-
         print('hit else add_to_order')
         # always return an HttpResponseRedirect after successfull POSTing data
         return HttpResponseRedirect(reverse('tbeystore:product', args=(product_item,)))
