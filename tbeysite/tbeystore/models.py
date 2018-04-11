@@ -21,8 +21,8 @@ class Vendor(models.Model):
     def __str__(self):
         return self.vendor_name
 
-    # def vendor_address(self):
-    #     return self.address + self.city + self.state + self.zip
+    def show_vendor_address(self):
+        return self.address + self.city + self.state + self.zip
 
 # CATEGORY CLASS #
 class Category(models.Model):
@@ -65,10 +65,12 @@ class Product(models.Model):
 
 # COMMENTS CLASS #
 class Comments(models.Model):
-    comments = models.CharField(max_length=300)
+    comment = models.CharField(max_length=300)
     date_added = models.DateField('date added', default=timezone.now)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.comment
     def was_recently_added(self):
         now = timezone.now()
         return now - datetime.timedelta(days=10) <= self.date_added <= now
@@ -84,7 +86,9 @@ class Product_Order(models.Model):
     # vendor = models.OneToOneField(Vendor, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     # product_count = models.PositiveIntegerField()
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    # order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    payment = models.CharField(max_length=200, default="placeholder")
 
 
 # _QUESTION CLASS #

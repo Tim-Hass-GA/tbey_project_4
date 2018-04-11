@@ -141,27 +141,22 @@ def add_to_order(request, product_id, user_id):
         product_item = get_object_or_404(Product, pk=product_id)
         print(product_item)
         if product_item.item_count != 0 and product_item.available:
-            order_form = ProductOrderForm(request.POST)
-            # order_form = ProductOrderForm(request.POST or None, instance=product_item)
-            # associate order_form to user and product
-            # order_form.user_id = int(user.id)
-            print('order_form product')
-            print(product_item.id)
-            print(order_form)
-            order_form.product = int(product_item.id)
-            print('order_form vendor')
-            print(product_item.vendor_id)
-            order_form.vendor = int(product_item.vendor_id)
-            print(order_form.vendor)
-            # order_form.payment = 'not right now'
-            if order_form.is_valid():
-                print('saving order_form...')
+            #  if the item is available and count is greater than 1
+            #  create an instance of the Product Order to temporarily save order
+            order_product = Product_Order()
+            # associate order_product to user and product
+            order_product.product = product_item
+            order_product.user = user
+            order_product.payment = 'payment system not in place'
+            if order_product.product is not None:
+                print('saving order_product...')
+                # reduce products inventory
                 # save back into products
-                product.item_count -= 1
-                product.save()
-                order_form.save()
+                product_item.item_count -= 1
+                product_item.save()
+                order_product.save()
                 return render(request, 'tbeystore/product.html', {
-                    'product': product,
+                    'product': product_item,
                     'error_message': "Order Saved."
                 })
             else:
@@ -170,8 +165,9 @@ def add_to_order(request, product_id, user_id):
                     'error_message': "Something when wrong in your order."
                 })
         else:
+            print(error)
             return render(request, 'tbeystore/product.html', {
-                'product': product,
+                'product': product_item,
                 'error_message': "Product is not available."
             })
 
@@ -179,14 +175,14 @@ def add_to_order(request, product_id, user_id):
         # redisplay the question voting form
 
         return render(request, 'tbeystore/product.html', {
-            'product': product,
+            'product': product_item,
             'error_message': "This item doesn't exist."
         })
     else:
 
         print('hit else add_to_order')
         # always return an HttpResponseRedirect after successfull POSTing data
-        return HttpResponseRedirect(reverse('tbeystore:product', args=(product_id,)))
+        return HttpResponseRedirect(reverse('tbeystore:product', args=(product_item,)))
 
 # def create_order(request, product_id):
 #     form = ToyForm(request.POST)

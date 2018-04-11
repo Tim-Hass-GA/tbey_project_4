@@ -20,7 +20,7 @@ class ProductForm(forms.ModelForm):
 class ProductOrderForm(forms.ModelForm):
     class Meta:
         model = Product_Order
-        fields = ('product', 'order')
+        fields = ('product', 'user', 'payment')
         # fields = ('product', 'vendor', 'product_count', 'order')
 
 class LoginForm(forms.Form):
