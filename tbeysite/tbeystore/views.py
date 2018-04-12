@@ -201,7 +201,7 @@ def cart_add(request, product_id):
         print('calling cart details')
         return redirect('tbeystore:cart_detail')
 
-@require_POST
+# @require_POST
 def cart_remove(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, pk=product_id)

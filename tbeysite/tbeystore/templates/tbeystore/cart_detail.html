@@ -2,32 +2,35 @@
 {% load staticfiles %}
 {% block content %}
   <div class="shopping_cart col s12 m6">
-    <p>{{ username }}'s Shopping Cart:</p>
+    <h3>{{ user.username }}'s Shopping Cart:</h3>
     {% if cart %}
-    <h3>Items in cart</h3>
+    <h4>Items in cart</h4>
       {% for item in cart %}
         {% with product=item.product %}
-        <h4>{{ product.name }}</h4>
+        <h5>{{ product.name }}</h5>
           <ul>
             <!-- <li>
               <a href="{% url 'tbeystore:cart_detail' %}">
                 {{ total_items }} item{{ total_items|pluralize }}, {{ cart.get_total }}
               </a>
             </li> -->
+            <li>Item Price: ${{item.price}}</li>
+            <li>Product Total: ${{item.total_price}}</li>
 
             <!-- <img src="{% if product.image %}{{ product.image.url }}{% else %} None {% endif %}" alt=""> -->
             <!-- <li>{{ product.name }}</li> -->
             <li>
-              <form class="" action="{% url 'tbeystore:cart_add' product.id %}" method="post">
+              Quantity:
+              <form class="update_cart" action="{% url 'tbeystore:cart_add' product.id %}" method="post">
                 {% csrf_token %}
                 {{ item.update_quantity_form.quantity }}
                 {{ item.update_quantity_form.update }}
+                <input type="submit" class="btn blue" value="Update Order"/>
               </form>
             </li>
 
-            <li>Item Price: ${{item.price}}</li>
-            <li>Product Total: ${{item.total_price}}</li>
-            <a href="{% url 'tbeystore:cart_remove' product.id %}">Remove Item</a>
+
+            <a class="btn red" href="{% url 'tbeystore:cart_remove' product.id %}">Remove Item</a>
           </ul>
 
         {% endwith %}
@@ -36,6 +39,6 @@
     {% else %}
       <p>Cart is empty</p>
     {% endif %}
-    <a href="#">Continue Shopping</a>
+    <a class="btn green" href="{% url 'tbeystore:index' %}">Continue Shopping</a>
   </div>
 {% endblock %}

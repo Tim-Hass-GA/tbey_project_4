@@ -28,6 +28,17 @@
               <a href="{% url 'tbeystore:login' %}">Login</a> |
               <a href="{% url 'tbeystore:signup' %}">Sign Up</a>
               {% endif %}
+              {% with total_item=cart|length %}
+                {% if cart|length > 0 %}
+                  | Your Cart:
+                  <a href="{% url 'tbeystore:cart_detail' %}">
+                    {{ total_items }} item{{ total_items|pluralize }}, ${{ cart.get_total_price }}
+                  </a>
+                <!-- TODO: add else for empty cart -->
+                {% endif %}
+              {% endwith %}
+
+
             </nav>
           <hr/>
         </div>
