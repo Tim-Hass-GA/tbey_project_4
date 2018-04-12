@@ -193,7 +193,7 @@ def cart_add(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
     form = AddToCartForm(request.POST)
     if form.is_valid():
-        print('cart_add form valid')
+        # print('cart_add form valid')
         cd = form.cleaned_data
         cart.add(product=product,
                     quantity=cd['quantity'],
@@ -208,13 +208,14 @@ def cart_remove(request, product_id):
     cart.remove(product)
     return redirect('tbeystore:cart_detail')
 
-@require_POST
+# @require_POST
 def cart_detail(request):
     cart = Cart(request)
     for item in cart:
+        print(item)
         item['update_quantity_form'] = AddToCartForm(initial = {'quantity':item['quantity'],
                                                         'update':True})
-    return render(request, 'tbeystore:cart_detail', {'cart':cart})
+    return render(request, 'tbeystore/cart_detail.html', {'cart':cart})
 
 
 #### VENDOR ####

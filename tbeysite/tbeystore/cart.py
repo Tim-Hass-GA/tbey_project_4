@@ -40,7 +40,7 @@ class Cart(object):
     def __iter__(self):
         ## iterate over the items in the cart
         product_ids = self.cart.keys()
-        products = Product.objects.filter(id__in, pk=product_ids)
+        products = Product.objects.filter(id__in=product_ids)
 
         for product in products:
             self.cart[str(product.id)]['product'] = product
@@ -54,7 +54,7 @@ class Cart(object):
         return sum(item['quantity'] for item in self.cart.values())
 
     def get_total_price(self):
-        return sum(Decimal(item['price']) + item['quantity'] for item in self.cart.values())
+        return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
 
     def clear_cart(self):
         self.session[settings.CART_SESSION_ID] = {}

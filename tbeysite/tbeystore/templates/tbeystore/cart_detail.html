@@ -1,26 +1,38 @@
 {% extends 'tbeystore/base.html' %}
+{% load staticfiles %}
 {% block content %}
   <div class="shopping_cart col s12 m6">
     <p>{{ username }}'s Shopping Cart:</p>
-    {% if cart.length > 0 %}
+    {% if cart %}
+    <h3>Items in cart</h3>
       {% for item in cart %}
         {% with product=item.product %}
-          <a href="{% url 'tbeystore:cart_detail' %}">
-            {{ total_items}} item{{ total_items|pluralize }}, {{ cart.get_total }}
-          </a>
-          <img src="{% if product.image %}{{ product.image.url }}{% else %} None {% endif %}" alt="">
-          <span>{{ product.name }}</span>
-          <form class="" action="{% url 'tbeystore:cart_add' product.id %}" method="post">
-            {% csrf_token %}
-            {{ item.update_quantity_form.quanity }}
-            {{ item.update_quantity_form.update }}
-          </form>
-          <span>Total: ${{cart.item_price}}</span>
-          <span>Total: ${{cart.total_price}}</span>
-          <a href="{% url 'tbeystore:cart_remove' product.id %}">Remove Item</a>
+        <h4>{{ product.name }}</h4>
+          <ul>
+            <!-- <li>
+              <a href="{% url 'tbeystore:cart_detail' %}">
+                {{ total_items }} item{{ total_items|pluralize }}, {{ cart.get_total }}
+              </a>
+            </li> -->
+
+            <!-- <img src="{% if product.image %}{{ product.image.url }}{% else %} None {% endif %}" alt=""> -->
+            <!-- <li>{{ product.name }}</li> -->
+            <li>
+              <form class="" action="{% url 'tbeystore:cart_add' product.id %}" method="post">
+                {% csrf_token %}
+                {{ item.update_quantity_form.quantity }}
+                {{ item.update_quantity_form.update }}
+              </form>
+            </li>
+
+            <li>Item Price: ${{item.price}}</li>
+            <li>Product Total: ${{item.total_price}}</li>
+            <a href="{% url 'tbeystore:cart_remove' product.id %}">Remove Item</a>
+          </ul>
+
         {% endwith %}
       {% endfor %}
-      <span>Total: ${{cart.get_total_price}}</span>
+      <h5>Total: ${{cart.get_total_price}}</h5>
     {% else %}
       <p>Cart is empty</p>
     {% endif %}
