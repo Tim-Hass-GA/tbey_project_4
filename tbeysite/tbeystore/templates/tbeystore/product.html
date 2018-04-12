@@ -4,13 +4,12 @@
 
 {% block content %}
   <div class="product_list  col s12 m6">
-    <a href="/{{product.id}}">
-    <h3>{{product.name}}</h3>
+    <a href="/{{product.id}}/">
+      <h3>{{product.name}}</h3>
     </a>
-
     <a href="/vendor/{{product.vendor.id}}/">
-    <p>Added By: {{ product.vendor }}</p></a>
-
+      <p>Added By: {{ product.vendor }}</p>
+    </a>
     <ul>
       <li>Category: {{product.category}}</li>
       <li>Description: {{product.description}}</li>
@@ -19,25 +18,31 @@
       <li>Item Count: {{product.item_count}}</li>
       <li>Date Added: {{product.date_added}}</li>
     </ul>
-      <!-- <h5>Likes:</h5> -->
-      <a class="waves-effect waves-light btn like" data-id="{{product.id}}">
-        Likes: {% if product.likes > 0 %} {{ product.likes }} {% else %} None {% endif %}
-      </a>
-      <form class="" action="add_to_order/{{user.id}}/" method="post">
-        {% csrf_token %}
-        <input type="submit" class="btn green" value="Order"/>
-      </form>
-      <!-- <a class="waves-effect waves-light btn add_to_order" data-id="{{product.id}}">
-        Add to Cart: {% if product.item_count > 0 %} {{ product.item_count }} {% else %} None {% endif %}
-      </a> -->
+    <!-- <img src="/{{product.image}}" alt=""> -->
+    <!-- <h5>Likes:</h5> -->
+    <a class="waves-effect waves-light btn like" data-id="{{product.id}}">
+      Likes: {% if product.likes > 0 %} {{ product.likes }} {% else %} None {% endif %}
+    </a>
+    <form class="" action="add_to_order/{{user.id}}/" method="post">
+      {% csrf_token %}
+      <input type="submit" class="btn green" value="Order"/>
+    </form>
+    <!-- <a class="waves-effect waves-light btn add_to_order" data-id="{{product.id}}">
+      Add to Cart: {% if product.item_count > 0 %} {{ product.item_count }} {% else %} None {% endif %}
+    </a> -->
     <hr/>
   </div>
   <div class="product_questions col s12 m6">
+    <div class="cart_add_to_order">
+      <h3> Order Item </h3>
+        <form class="" action="{% url 'tbeystore:cart_add' product.id %}" method="post">
+          {% csrf_token %}
+          {{ cart_product_form }}
+        <input type="submit" class="btn green" value="Order"/>
+      </form>
+    </div>
     <div class="questions">
-      <!-- <h3> Product Image </h3> -->
-      <!-- <img src="/{{product.image}}" alt=""> -->
-
-      <!-- <h3> Product Questions </h3> -->
+      <h3> Product Questions </h3>
       <!-- TODO: add questions to the mix -->
       {% if question %}
         <ul>
@@ -45,7 +50,7 @@
             <li>
               <a href="{% url 'tbeystore:question_detail' question.id %}">{{ question.question_text }}</a>
             </li>
-            {% endfor %}
+          {% endfor %}
         </ul>
       {% else %}
         <p>This section is not completed.</p>

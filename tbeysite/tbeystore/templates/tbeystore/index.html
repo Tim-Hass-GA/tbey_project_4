@@ -30,11 +30,11 @@ to the app (subfolder of templates) -->
   </div>
   <div class="something_here col s12 m6">
     <h2> something here </h2>
-    
+
     <hr/>
     <h2> Vendors </h2>
     {% for vendor in vendors %}
-      <a href="vendor/{{ vendor.id }}">
+      <a href="vendor/{{ vendor.id }}/">
         <h4>{{ vendor.vendor_name }}</h4>
       </a>
     {% endfor %}

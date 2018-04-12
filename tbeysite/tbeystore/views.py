@@ -1,29 +1,24 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Vendor, Question, Choice, Product, Category, Product_Order, Order
-from .forms import LoginForm, SignUpForm, ProductForm, VendorForm, ProductOrderForm
+from .forms import LoginForm, SignUpForm, ProductForm, VendorForm, ProductOrderForm, AddToCartForm
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
-# from django.template import loader
+from django.views.decorators.http import require_POST
+from .cart import Cart
+from django.template import loader
 import requests
 
 # Create your views here.
-#  “index” page – displays the home view.
-#  “detail” page – displays a question text, with no results but with a form to vote.
-#  “results” page – displays results for a particular item.
-#  action – handles action for a particular choice in a particular question.
-#  example template should be at polls/templates/polls/index.html
 
-##### GET HOME ROUTE
-
-
-# class QuestionIndexView(generic.ListView):
-#     template_name = 'tbeystore/question.html'
-#     context_object_name = 'latest_question_list'
-#
+####### TODO's #######
+## TODO: refactor from def to class where necessary
+# class IndexView(generic.ListView):
+#     template_name = 'tbeystore/index.html'
+#     context_object_name =
 #     def get_queryset(self):
         # Return the last 5 published questions
         # not including those set for future publishing date
@@ -35,15 +30,14 @@ import requests
         # ).order_by('-pub_date')[:5]
         # return Question.objects.order_by('-pub_date')[:5]
 
-# 1 details
-##########   -- refactor
-# try:
-#     question = Question.objects.get(pk=question_id)
-# except Question.DoesNotExist:
-#     raise Http404("Question does not exist")
-# return render(request, 'polls/detail.html', {'question':question})
+########## TODO: also -- refactor
+    # try:
+    #     question = Question.objects.get(pk=question_id)
+    # except Question.DoesNotExist:
+    #     raise Http404("Question does not exist")
+    # return render(request, 'polls/detail.html', {'question':question})
 
-
+##### GET HOME ROUTE
 def index(request):
     vendors = Vendor.objects.all()
     products = Product.objects.all()
@@ -55,12 +49,17 @@ def product(request, product_id):
     product = Product.objects.get(id=product_id)
     questions = Question.objects.filter(product_id=product_id)
     # form = QuestionForm()
+    cart_product_form = AddToCartForm()
+    ## TODO: add api call for vendor such as EBAY --- COSTCO
 #     # payload = {'key':'TOKEN'}
 #     res = requests.get('http://thecatapi.com/api/images/get')
 #     # res = requests.get('http://thecatapi.com/api/images/get', params=payload)
 #     # return render(request, 'api.html', {'imageurl':res.url})
-    return render(request, 'tbeystore/product.html', {'product':product, 'questions':questions})
-    # return render(request, 'tbeystore/product.html', {'product':product, 'category':category})
+    return render(request, 'tbeystore/product.html', {
+                    'product':product,
+                    'questions':questions,
+                    'cart_product_form':cart_product_form})
+
 
 ##### CREATE PRODUCT ROUTE
 def post_product(request, vendor_id):
@@ -77,7 +76,8 @@ def post_product(request, vendor_id):
             print(product.vendor_id)
             product.save()
             print('saved')
-            return HttpResponseRedirect('/')
+            # return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse('tbeystore:vendor', args=(vendor.id,)))
         else:
             form = ProductForm()
             return render(request, 'tbeystore/vendor.html', {
@@ -98,15 +98,14 @@ def edit_product(request, product_id):
     if request.method == 'POST':
         if form.is_valid():
             form.save()
-            return redirect('/')
-            # return redirect('product', product_id)
+            # return HttpResponseRedirect(reverse('tbeystore:product', args=(product_id,)))
+            return HttpResponseRedirect(reverse('tbeystore:vendor', args=(instance.vendor_id,)))
     else:
         return render(request, 'tbeystore/edit_product.html', {'product':instance, 'form':form})
 
 ##### LIKE PRODUCT ROUTE
 ## TODO: add conditional for users ...............
 def like_product(request):
-    # print('like product view')
     product_id = request.GET.get('product_id', None)
     likes = 0
     if (product_id):
@@ -122,7 +121,7 @@ def delete_product(request, product_id):
     if request.method == 'POST':
         instance = Product.objects.get(pk=product_id)
         instance.delete()
-        return redirect('/')
+        return HttpResponseRedirect(reverse('tbeystore:vendor', args=(instance.vendor_id,)))
 
 
 ##### CREATE PRODUCT ORDER ROUTE
@@ -146,6 +145,8 @@ def add_to_order(request, product_id, user_id):
             order_product = Product_Order()
             # associate order_product to user and product
             order_product.product = product_item
+            order_product.product_count = 1
+            order_product.product_price = product_item.price
             order_product.user = user
             order_product.payment = 'payment system not in place'
             if order_product.product is not None:
@@ -182,30 +183,36 @@ def add_to_order(request, product_id, user_id):
         # always return an HttpResponseRedirect after successfull POSTing data
         return HttpResponseRedirect(reverse('tbeystore:product', args=(product_item,)))
 
-# def create_order(request, product_id):
-#     form = ToyForm(request.POST)
-#     if form.is_valid():
-#         # if we have good POST data
-#         # see if there is a toy with this name
-#         try:
-#             toy = Toy.objects.get(name=form.data.get('name'))
-#         except:
-#             toy = None
-#         #if no toy by that name exists save it to the database
-#         if toy is None:
-#             toy = form.save()
-#         cat = Cat.objects.get(pk=cat_id)
-#         toy.cats.add(cat)
-#         return redirect('show_toy', toy.id)
-#     else:
-#         return redirect('show', cat_id)
 
-##### SHOW TOY ROUTE
-# def show_toy(request, toy_id):
-#     toy = Toy.objects.get(pk=toy_id)
-#     cats = toy.cats.all()
-#     return render(request, 'show_toy.html', {'toy': toy, 'cats':cats})
+##### SHOPPING CART ROUTE
+@require_POST
+def cart_add(request, product_id):
+    cart = Cart(request)
+    product = get_object_or_404(Product, pk=product_id)
+    form = AddToCartForm(request.POST)
+    if form.is_valid():
+        print('cart_add form valid')
+        cd = form.cleaned_data
+        cart.add(product=product,
+                    quantity=cd['quantity'],
+                    update_quantity=cd['update'])
+        print('calling cart details')
+        return redirect('tbeystore:cart_detail')
 
+@require_POST
+def cart_remove(request, product_id):
+    cart = Cart(request)
+    product = get_object_or_404(Product, pk=product_id)
+    cart.remove(product)
+    return redirect('tbeystore:cart_detail')
+
+@require_POST
+def cart_detail(request):
+    cart = Cart(request)
+    for item in cart:
+        item['update_quantity_form'] = AddToCartForm(initial = {'quantity':item['quantity'],
+                                                        'update':True})
+    return render(request, 'tbeystore:cart_detail', {'cart':cart})
 
 
 #### VENDOR ####
@@ -215,26 +222,7 @@ def vendor(request, vendor_id):
     products = Product.objects.filter(vendor=vendor)
     # questions = Questions.objects.filter(products=products)
     form = ProductForm()
-    # vendor_owner = User.objects.get(id=vendor.user_id)
-    # print(vendor.id)
-    # return render(request, 'tbeystore/vendor.html', {'vendor':vendor , 'user':vendor_owner})
     return render(request, 'tbeystore/vendor.html', {'vendor':vendor, 'products':products, 'form':form})
-    # return render(request, 'tbeystore/vendor.html', {'vendor':vendor, 'form':form})
-
-# question = get_object_or_404(Question, pk=question_id)
-#     try:
-#         selected_choice = question.choice_set.get(pk=request.POST['choice'])
-#     except (KeyError, Choice.DoesNotExist):
-#         # redisplay the question voting form
-#         return render(request, 'polls/detail.html', {
-#             'question': question,
-#             'error_message': "You didn't select a choice."
-#         })
-#     else:
-#         selected_choice.votes += 1
-#         selected_choice.save()
-#         # always return an HttpResponseRedirect after successfull POSTing data
-#         return HttpResponseRedirect(reverse('polls:results', args=(question_id,)))
 
 ##### VENDOR SIGN UP ROUTE
 def vendor_signup(request, user_id):
@@ -277,7 +265,7 @@ def edit_vendor(request, vendor_id):
     if request.method == 'POST':
         if form.is_valid():
             form.save()
-            return redirect('/')
+            return HttpResponseRedirect(reverse('tbeystore:vendor', args=(vendor_id,)))
     return render(request, 'tbeystore/edit_vendor.html', {'vendor':instance, 'form':form})
 
 ##### VENDOR DELETE ROUTE
@@ -360,6 +348,15 @@ class CommentsIndexView(generic.ListView):
     def get_queryset(self):
         # comments on products
         return HttpResponse("i need to be created")
+
+
+    # def post_comment(request, new_comment):
+    #     if request.session.get('has_commented', False):
+    #         return HttpResponse("You've already commented.")
+    #     c = comments.Comment(comment=new_comment)
+    #     c.save()
+    #     request.session['has_commented'] = True
+    #     return HttpResponse('Thanks for your comment!')
 
 ############ TODO: Questions for users and vendors
 ## users about products

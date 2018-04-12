@@ -5,11 +5,11 @@
     <ul>
       <li>Description: {{vendor.description}}</li>
       <li>Email: {{vendor.email}}</li>
-      <li>Location: {{vendor.vendor_address}}</li>
+      <li>Location: {{vendor.show_vendor_address}}</li>
       <li>Website: {{vendor.website}}</li>
       <li>Phone: {{vendor.phone}}</li>
       <li>Owner: {{vendor.user_id}}</li>
-      <li>Date Joined: {{user.date_joined}}</li>
+      <!-- <li>Date Joined: {{user.date_joined}}</li> -->
     </ul>
     {% if user.id == vendor.user_id %}
       <a class="waves-effect waves-light btn edit_vendor" href="/{{vendor.id}}/edit_vendor/">

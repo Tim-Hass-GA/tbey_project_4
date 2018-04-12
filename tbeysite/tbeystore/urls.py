@@ -1,5 +1,6 @@
 from django.urls import path, re_path
 from . import views
+# from django.conf.urls import url
 
 # path(path / urls / kwargs / name)
 # re_path regular expression
@@ -18,7 +19,6 @@ urlpatterns = [
     # path('', views.IndexView.as_view(), name='index'),
     # re_path(r'^([0-9]+)/$', views.show, name='show'),
     path('<int:product_id>/', views.product, name='product'),
-    # path('<int:vendor_id>/post_product/', views.post_product, name='post_product'),
     path('post_product/<int:vendor_id>/', views.post_product, name='post_product'),
     path('user/<user_name>/', views.profile, name='profile'),
     path('vendor/<int:vendor_id>/', views.vendor, name='vendor'),
@@ -32,8 +32,9 @@ urlpatterns = [
     path('<int:vendor_id>/edit_vendor/', views.edit_vendor, name='edit_vendor'),
     path('<int:product_id>/destroy/', views.delete_product, name='delete_product'),
     path('<int:vendor_id>/destroy_vendor/', views.delete_vendor, name='delete_vendor'),
-    # path('<int:cat_id>/toy/create/', views.create_toy, name='create_toy'),
-    # path('toy/<int:toy_id>/', views.show_toy, name='show_toy'),
+    path('cart_detail/', views.cart_detail, name='cart_detail'),
+    re_path('^add/(?P<product_id>\d+)/$', views.cart_add, name='cart_add'),
+    re_path('^remove/(?P<product_id>\d+)/$', views.cart_remove, name='cart_remove'),
     path('api/', views.api, name='api'),
     # /question/
     path('question', views.QuestionIndexView.as_view(), name='question'),

@@ -7,7 +7,10 @@
   <form class="vendor_update_form" action="/{{ vendor.id}}/edit_vendor/" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" class="btn green" value="submit"/>
+    <input type="submit" class=" btn green" value="submit"/>
   </form>
+  <a href="/vendor/{{ vendor.id }}/" class="waves-effect waves-light btn grey">
+    Back to {{ vendor.vendor_name }} Shop
+  </a>
 </div>
 {% endblock %}

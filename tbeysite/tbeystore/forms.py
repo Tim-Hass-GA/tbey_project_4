@@ -20,9 +20,16 @@ class ProductForm(forms.ModelForm):
 class ProductOrderForm(forms.ModelForm):
     class Meta:
         model = Product_Order
-        fields = ('product', 'user', 'payment')
+        fields = ('product', 'user', 'product_count', 'product_price', 'payment')
         # fields = ('product', 'vendor', 'product_count', 'order')
 
+PRODUCT_QUANTITY_CHOICES = [(i, str(i)) for i in range(1,6)]
+class AddToCartForm(forms.Form):
+    quantity = forms.TypedChoiceField(choices=PRODUCT_QUANTITY_CHOICES,
+                                        coerce=int)
+    update = forms.BooleanField(required=False,
+                                    initial=False,
+                                    widget=forms.HiddenInput)
 
 class LoginForm(forms.Form):
     username = forms.CharField(label="User Name", max_length=64)

@@ -16,13 +16,14 @@ class Vendor(models.Model):
     zip = models.PositiveIntegerField()
     website = models.URLField(max_length=100)
     email = models.EmailField(max_length=100)
-    phone = models.PositiveIntegerField()
+    phone = models.CharField(max_length=9)
 
     def __str__(self):
         return self.vendor_name
 
     def show_vendor_address(self):
-        return self.address + self.city + self.state + self.zip
+        address = self.address, self.city, self.state, str(self.zip)
+        return address
 
 # CATEGORY CLASS #
 class Category(models.Model):
@@ -63,6 +64,8 @@ class Product(models.Model):
     def was_recently_added(self):
         now = timezone.now()
         return now - datetime.timedelta(days=10) <= self.date_added <= now
+    # def get_absolute_url(self):
+    #     return reverse('tbeystore:product', args=[self.id])
 
 # COMMENTS CLASS #
 class Comments(models.Model):
@@ -77,6 +80,7 @@ class Comments(models.Model):
         return now - datetime.timedelta(days=10) <= self.date_added <= now
 
 
+
 # ORDER CLASS #
 class Order(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -86,7 +90,8 @@ class Order(models.Model):
 class Product_Order(models.Model):
     # vendor = models.OneToOneField(Vendor, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    # product_count = models.PositiveIntegerField()
+    product_count = models.PositiveIntegerField()
+    product_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     # order_invoice = models.FileField(upload_to='tbeystore/static/tbeystore/user/invoice')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     payment = models.CharField(max_length=200, default="placeholder")
