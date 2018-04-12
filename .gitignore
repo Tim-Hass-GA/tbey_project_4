@@ -1,9 +1,11 @@
 
 
+./tbeysite/tbeysite/__pycache__/
 ./tbeysite/tbeystore/__pycache__/
-./tbeystore/migrations/
+./tbeysite/tbeysite/migrations/
 ./tbeysite/tbeystore/migrations/
 ./tbeysite/tbeysite/settings.py
+
 
 # Created by https://www.gitignore.io
 

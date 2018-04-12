@@ -1,6 +1,6 @@
 {% extends 'tbeystore/base.html' %}
 {% block content %}
-  <div class="vendor_profile col s12 m6">
+  <div class="store_profile col s12 m6">
     <h2>{{ vendor.vendor_name }}'s Store:</h2>
     <ul>
       <li>Description: {{vendor.description}}</li>
@@ -8,13 +8,11 @@
       <li>Location: {{vendor.show_vendor_address}}</li>
       <li>Website: {{vendor.website}}</li>
       <li>Phone: {{vendor.phone}}</li>
-      <li>Owner: {{vendor.user_id}}</li>
-      <!-- <li>Date Joined: {{user.date_joined}}</li> -->
+      <li>Store ID: {{vendor.user_id}}</li>
     </ul>
     {% if user.id == vendor.user_id %}
       <a class="waves-effect waves-light btn edit_vendor" href="/{{vendor.id}}/edit_vendor/">
         Edit
-        <!-- Edit {{ vendor.vendor_name }} -->
       </a>
       <form class="vendor_delete_form" action="/{{ vendor.id }}/destroy_vendor/" method="post">
         {% csrf_token %}
@@ -32,7 +30,7 @@
   </div>
 
   <div class="product_list col s12 m6 section scrollspy">
-    <h3> Vendor Products </h3>
+    <h3> Store Products </h3>
     {% for product in products %}
     <a href="/{{product.id}}">
     <h3>{{product.name}}</h3>
@@ -45,7 +43,6 @@
       <li>Item Count: {{product.item_count}}</li>
       <li>Date Added: {{product.date_added}}</li>
     </ul>
-
       {% if user.id == vendor.user.id %}
         <h5>Product Options</h5>
         <a class="waves-effect waves-light btn edit_product" href="/{{product.id}}/edit_product/">

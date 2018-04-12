@@ -108,7 +108,7 @@ class Question(models.Model):
         return self.question_text
     def was_published_recently(self):
         now = timezone.now()
-        return now - datetime.timedelta(days=10) <= self.pub_date <= now
+        return now - datetime.timedelta(days=30) <= self.pub_date <= now
 
 
 # CHOICE CLASS #

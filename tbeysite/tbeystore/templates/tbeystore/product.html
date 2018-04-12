@@ -4,11 +4,11 @@
 
 {% block content %}
   <div class="product_list  col s12 m6">
-    <a href="/{{product.id}}/">
+    <!-- <a href="/{{product.id}}/"> -->
       <h3>{{product.name}}</h3>
-    </a>
+    <!-- </a> -->
     <a href="/vendor/{{product.vendor.id}}/">
-      <p>Added By: {{ product.vendor }}</p>
+      <p>Store: {{ product.vendor }}</p>
     </a>
     <ul>
       <li>Category: {{product.category}}</li>
@@ -34,7 +34,7 @@
   </div>
   <div class="product_questions col s12 m6">
     <div class="cart_add_to_order">
-      <h3> Order Item </h3>
+      <h3> Cart Item </h3>
         <form class="" action="{% url 'tbeystore:cart_add' product.id %}" method="post">
           {% csrf_token %}
           {{ cart_product_form }}
@@ -42,11 +42,12 @@
       </form>
     </div>
     <div class="questions">
-      <h3> Product Questions </h3>
       <!-- TODO: add questions to the mix -->
-      {% if question %}
+      {% if questions %}
+        <h3> Product Questions </h3>
         <ul>
           {% for question in latest_question_list %}
+
             <li>
               <a href="{% url 'tbeystore:question_detail' question.id %}">{{ question.question_text }}</a>
             </li>

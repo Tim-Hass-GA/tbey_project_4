@@ -48,7 +48,7 @@ def index(request):
 def product(request, product_id):
     product = Product.objects.get(id=product_id)
     questions = Question.objects.filter(product_id=product_id)
-    # form = QuestionForm()
+    # question_form = QuestionForm()
     cart_product_form = AddToCartForm()
     ## TODO: add api call for vendor such as EBAY --- COSTCO
 #     # payload = {'key':'TOKEN'}
@@ -58,6 +58,7 @@ def product(request, product_id):
     return render(request, 'tbeystore/product.html', {
                     'product':product,
                     'questions':questions,
+                    # 'question_form':question_form,
                     'cart_product_form':cart_product_form})
 
 
@@ -157,6 +158,7 @@ def add_to_order(request, product_id, user_id):
                     product_item.item_count -= 1
                 product_item.save()
                 order_product.save()
+                # return HttpResponseRedirect(reverse, 'tbeystore:product', args=(product_item))
                 return render(request, 'tbeystore/product.html', {
                     'product': product_item,
                     'error_message': "Order Saved."
@@ -349,20 +351,20 @@ class CommentsIndexView(generic.ListView):
         # comments on products
         return HttpResponse("i need to be created")
 
-
-    # def post_comment(request, new_comment):
-    #     if request.session.get('has_commented', False):
-    #         return HttpResponse("You've already commented.")
-    #     c = comments.Comment(comment=new_comment)
-    #     c.save()
-    #     request.session['has_commented'] = True
-    #     return HttpResponse('Thanks for your comment!')
+    # TODO: add this to comments once in place
+    def post_comment(request, new_comment):
+        if request.session.get('has_commented', False):
+            return HttpResponse("You've already commented.")
+        c = comments.Comment(comment=new_comment)
+        c.save()
+        request.session['has_commented'] = True
+        return HttpResponse('Thanks for your comment!')
 
 ############ TODO: Questions for users and vendors
 ## users about products
 ## vendors about user needs
 class QuestionIndexView(generic.ListView):
-    template_name = 'tbeystore/question.html'
+    template_name = 'tbeystore/product.html'
     context_object_name = 'latest_question_list'
 
     def get_queryset(self):

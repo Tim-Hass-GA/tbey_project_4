@@ -23,6 +23,11 @@ class ProductOrderForm(forms.ModelForm):
         fields = ('product', 'user', 'product_count', 'product_price', 'payment')
         # fields = ('product', 'vendor', 'product_count', 'order')
 
+# class QuestionForm(forms.ModelForm):
+#     class Meta:
+#         model = Question
+#         fields = ('question_text',)
+
 PRODUCT_QUANTITY_CHOICES = [(i, str(i)) for i in range(1,6)]
 class AddToCartForm(forms.Form):
     quantity = forms.TypedChoiceField(choices=PRODUCT_QUANTITY_CHOICES,
