@@ -58,8 +58,11 @@ Like action – handles liking for a particular product.
 
 ### Wireframes
 ![Image of Wireframes](./readme_images/wireframe_0.png)
+
 ![Image of Wireframes](./readme_images/wireframe_1.png)
+
 ![Image of Wireframes](./readme_images/wireframe_2.png)
+
 ![Image of Wireframes](./readme_images/wireframe_3.png)
 
 ## Development Process
