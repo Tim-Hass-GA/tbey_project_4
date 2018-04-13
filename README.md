@@ -38,21 +38,6 @@ POST (PUT) | re_path('^add/(?P<product_id>\d+)/$ | post (update) | - add item to
 DELETE | re_path('^remove/(?P<product_id>\d+)/$', views.cart_remove, name='cart_remove'),
 POST | re_path('^create/$ | post | - create the order (submit)
 
-## Views
-Store homepage – displays the latest few entries.
-User Profile – displays the users data.
-Profile update action – allows users to adjust profile data.
-Product “detail” page – permalink page for a single entry.
-Vendor Profile page – displays the vendors data.
-Profile update action – allows users to adjust profile data.
-Shopping Cart page – displays all months with entries in the given year..
-Order page – displays all months with entries in the given year..
-Order archive page – displays all months with entries in the given year..
-Comment/Question action – handles posting comments to a given entry.
-Question “detail” page – displays a question text, with no results but with a form to vote.
-Question “results” page – displays results for a particular question.
-Like action – handles liking for a particular product.
-
 ### Data Models
 ![Image of DataModels](./readme_images/data_models.png)
 
