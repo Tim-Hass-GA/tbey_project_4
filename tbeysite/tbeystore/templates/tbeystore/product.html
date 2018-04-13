@@ -23,10 +23,10 @@
     <a class="waves-effect waves-light btn like" data-id="{{product.id}}">
       Likes: {% if product.likes > 0 %} {{ product.likes }} {% else %} None {% endif %}
     </a>
-    <form class="" action="add_to_order/{{user.id}}/" method="post">
+    <!-- <form class="" action="add_to_order/{{user.id}}/" method="post">
       {% csrf_token %}
       <input type="submit" class="btn green" value="Order"/>
-    </form>
+    </form> -->
     <!-- <a class="waves-effect waves-light btn add_to_order" data-id="{{product.id}}">
       Add to Cart: {% if product.item_count > 0 %} {{ product.item_count }} {% else %} None {% endif %}
     </a> -->
@@ -34,7 +34,7 @@
   </div>
   <div class="product_questions col s12 m6">
     <div class="cart_add_to_order">
-      <h3> Cart Item </h3>
+      <h4> Add to Cart </h4>
         <form class="" action="{% url 'tbeystore:cart_add' product.id %}" method="post">
           {% csrf_token %}
           {{ cart_product_form }}
@@ -44,17 +44,16 @@
     <div class="questions">
       <!-- TODO: add questions to the mix -->
       {% if questions %}
-        <h3> Product Questions </h3>
+        <h4> Product Questions </h4>
         <ul>
           {% for question in latest_question_list %}
-
             <li>
               <a href="{% url 'tbeystore:question_detail' question.id %}">{{ question.question_text }}</a>
             </li>
           {% endfor %}
         </ul>
       {% else %}
-        <p>This section is not completed.</p>
+        <p>This section is not complete.</p>
       {% endif %}
     </div>
   </div>

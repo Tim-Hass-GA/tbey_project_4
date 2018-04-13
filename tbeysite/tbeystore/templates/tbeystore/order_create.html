@@ -1,0 +1,20 @@
+{% extends 'tbeystore/base.html' %}
+{% load staticfiles %}
+
+
+{% block content %}
+  <div class="order col s12 m6">
+    <h3>Your Order</h3>
+    <ul>
+      {% for item in cart %}
+        <li>{{ item.quantity }} x {{ item.product.name }} <span>${{ item.total_price }}</span> </li>
+      {% endfor %}
+    </ul>
+    <span>Order Total: ${{ cart.get_total_price }}</span>
+    <form class="place_order" action="." method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" class="btn green" value="Place Order"/>
+    </form>
+  </div>
+{% endblock %}

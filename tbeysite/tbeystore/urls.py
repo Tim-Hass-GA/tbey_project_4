@@ -35,6 +35,7 @@ urlpatterns = [
     path('cart_detail/', views.cart_detail, name='cart_detail'),
     re_path('^add/(?P<product_id>\d+)/$', views.cart_add, name='cart_add'),
     re_path('^remove/(?P<product_id>\d+)/$', views.cart_remove, name='cart_remove'),
+    re_path('^create/$', views.order_create, name='order_create'),
     path('api/', views.api, name='api'),
     # /question/
     path('question', views.QuestionIndexView.as_view(), name='question'),

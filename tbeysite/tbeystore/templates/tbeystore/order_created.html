@@ -1,0 +1,18 @@
+{% extends 'tbeystore/base.html' %}
+{% load staticfiles %}
+<!-- {% load static %} -->
+
+{% block content %}
+  <div class="thank_you col s12 m6">
+    <h3>Thank you for your order</h3>
+    <p>
+      Your order has been successfully created.
+      Your order number is <strong>{{ order.id }}</strong>
+    </p>
+    <a class="btn blue" href="{% url 'tbeystore:index' %}">Continue Shopping</a>
+  </div>
+  <!-- <div class="cat_api_image col s12 m6">
+    <h3> Cat </h3>
+    <img src="{{ imageurl }}" alt="a random cat image"/>
+  </div> -->
+{% endblock  %}

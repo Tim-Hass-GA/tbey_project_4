@@ -39,6 +39,11 @@
     {% else %}
       <p>Cart is empty</p>
     {% endif %}
-    <a class="btn green" href="{% url 'tbeystore:index' %}">Continue Shopping</a>
+    <a class="btn blue" href="{% url 'tbeystore:index' %}">Continue Shopping</a>
+    {% if user.id != null and cart|length > 0 %}
+      <a class="btn green" href="{% url 'tbeystore:order_create' %}">Checkout</a>
+    {% elif user is None or user.id == null %}
+      <a class="btn green" href="{% url 'tbeystore:login' %}">Login to Checkout</a>
+    {% endif %}
   </div>
 {% endblock %}

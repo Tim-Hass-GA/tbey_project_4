@@ -13,7 +13,7 @@ class Vendor(models.Model):
     address = models.CharField(max_length=250)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=2)
-    zip = models.PositiveIntegerField()
+    zip = models.CharField(max_length=5)
     website = models.URLField(max_length=100)
     email = models.EmailField(max_length=100)
     phone = models.CharField(max_length=9)
@@ -83,10 +83,35 @@ class Comments(models.Model):
 
 # ORDER CLASS #
 class Order(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    payment = models.CharField(max_length=200, default="placeholder")
+    # user = models.ForeignKey(User, on_delete=models.CASCADE)
+    address = models.CharField(max_length=250)
+    # city = models.CharField(max_length=100)
+    # state = models.CharField(max_length=2)
+    # zip = models.CharField(max_length=5)
+    created = models.DateField('date created', default=timezone.now)
+    updated = models.DateField('date updated', default=timezone.now)
+    paid = models.BooleanField(default=False)
+
+    def __str__(self):
+        return 'Order {}'.format(self.id)
+    def get_total_cost(self):
+        return sum(item.get_cost() for item in self.items.all())
+
+# ORDER ITEMS CLASS #
+class OrderItems(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='order_items')
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    quantity = models.PositiveIntegerField(default=1)
+    paid = models.BooleanField(default=False)
+
+    def __str__(self):
+        return '{}'.format(self.id)
+    def get_cost(self):
+        return self.price * self.quantity
 
 
+## initial order model
 class Product_Order(models.Model):
     # vendor = models.OneToOneField(Vendor, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -119,47 +144,3 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.choice_text
-
-
-
-# ####### Create your models here.          CAT
-# class Cat(models.Model):
-#     likes = models.IntegerField(default=0)
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     name = models.CharField(max_length=100)
-#     breed = models.CharField(max_length=100)
-#     description = models.CharField(max_length=100)
-#     age = models.IntegerField()
-#     # toys = models.ManyToManyField(Toy)
-#
-#     def __str__(self):
-#         return self.name
-#
-# class Toy(models.Model):
-#     name = models.CharField(max_length=100)
-#     cats = models.ManyToManyField(Cat)
-#
-#     def __str__(self):
-#         return self.name
-
-# # Create your models here            ARTIST.
-# class Artist(models.Model):
-#   name = models.CharField(max_length=200)
-#
-#   def __str__(self):
-#     return self.name
-#
-# class Album(models.Model):
-#   title = models.CharField(max_length=200)
-#   artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
-#
-#   def __str__(self):
-#     return self.title
-#
-# class Song(models.Model):
-#   title = models.CharField(max_length=200)
-#   album = models.ForeignKey(Album, on_delete=models.CASCADE)
-#   artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
-#
-#   def __str__(self):
-#     return self.title

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Vendor, Question, Choice, Product, Category, Product_Order, Order
-from .forms import LoginForm, SignUpForm, ProductForm, VendorForm, ProductOrderForm, AddToCartForm
+from .models import Vendor, Question, Choice, Product, Category, Product_Order, Order, OrderItems
+from .forms import LoginForm, SignUpForm, ProductForm, VendorForm, ProductOrderForm, AddToCartForm, OrderCreateForm
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
@@ -9,6 +9,9 @@ from django.views import generic
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 from .cart import Cart
+from django.forms import formset_factory
+# from .tasks import order_created
+from .context_processors import cart
 from django.template import loader
 import requests
 
@@ -133,6 +136,42 @@ def delete_product(request, product_id):
 #     def get_queryset(self):
 #         return Order.objects.filter()
 
+
+def order_create(request):
+    cart = Cart(request)
+    # OrderCreateFormSet = formset_factory(OrderCreateForm)
+    # formset = OrderCreateFormSet(form_kwargs={'user': request.user})
+
+    if request.method == 'POST':
+        # OrderCreateFormSet = formset_factory(OrderCreateForm)
+        # formset = OrderCreateFormSet(request.POST, form_kwargs={'user': request.user})
+        form = OrderCreateForm(request.POST)
+        # formset = OrderCreateForm(request.POST, {'user':request.user})
+        # form = OrderCreateFormSet
+        print(form)
+        if form.is_valid():
+            print('order create form is valid')
+            order = form.save()
+            for item in cart:
+                OrderItems.objects.create(order=order,
+                                            product=item['product'],
+                                            price=item['price'],
+                                            quantity=item['quantity'])
+            cart.clear_cart()
+            # order_created.delay(order.id)
+            return render(request, 'tbeystore/order_created.html', {'order':order})
+    else:
+        # OrderCreateFormSet = formset_factory(OrderCreateForm)
+        # formset = OrderCreateFormSet(form_kwargs={'user': request.user})
+        # form = OrderCreateForm(form_kwargs={'user': request.user})
+
+        form = OrderCreateForm()
+        return render(request, 'tbeystore/order_create.html', {'cart':cart,'form':form})
+        # return render(request, 'tbeystore/order_create.html', {'cart':cart,'formset':formset})
+
+
+
+
 def add_to_order(request, product_id, user_id):
     user = get_object_or_404(User, pk=user_id)
     print(user,'in add_to_order....')
@@ -242,6 +281,15 @@ def vendor_signup(request, user_id):
                     # clean form
                     vendor = form.save(commit = False)
                     vendor.user_id = request.user.id
+                    ## TODO: deal with the edge case
+                    # if we have good POST data
+                    # see if there is a toy with this name
+                    # try:
+                    #     vendor = Vendor.objects.get(name=form.data.get('name'))
+                    # except:
+                    #     vendor = None
+                    # #if no toy by that name exists save it to the database
+                    # if vendor is None:
                     print(vendor.user_id)
                     vendor.save()
                     print('saved')

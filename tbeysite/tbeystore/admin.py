@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Question, Choice, Vendor, Product, Category
+from .models import Question, Choice, Vendor, Product, Category, Order, OrderItems
 
 # Register your models here.
 
@@ -35,6 +35,16 @@ class QuestionInLine(admin.StackedInline):
 class QuestionAdmin(admin.ModelAdmin):
     inlines = [ChoiceInLine]
 
+## defind the way the view looks
+class OrderItemsInLine(admin.StackedInline):
+    model = OrderItems
+    raw_id_field = ['product']
+
+# import the model for the view
+class OrderAdmin(admin.ModelAdmin):
+    list_filter = ['paid', 'created', 'updated']
+    inlines = [OrderItemsInLine]
+
 # Register Choice and Question with their custom Admin interfaces
 # add all admin views
 # admin.site.register(Choice, ChoiceAdmin)
@@ -45,6 +55,6 @@ admin.site.register(Question, QuestionAdmin)
 # Django default admin interface.
 # admin.site.register(Vendor, VendorAdmin)
 admin.site.register(Vendor)
-# admin.site.register(Product, ProductAdmin)
+admin.site.register(Order, OrderAdmin)
 admin.site.register(Product)
 admin.site.register(Category)
