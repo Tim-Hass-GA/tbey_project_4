@@ -34,9 +34,9 @@ POST | vendor_signup/<int:user_id>/ | post | - store signup
 PUT | <int:vendor_id>/edit_vendor/ | update | - edit vendor profile
 DELETE | <int:vendor_id>/destroy_vendor/ | delete | - delete a vendor
 GET | cart_detail/ | read | - view cart detail
-POST (PUT) | re_path('^add/(?P<product_id>\d+)/$ | post (update) | - add item to cart
-DELETE | re_path('^remove/(?P<product_id>\d+)/$ | delete | - remove items from cart
-POST | re_path('^create/$ | post | - create the order (submit)
+POST (PUT) | re_path('^add/(?P<product_id>\d+)/$... | post (update) | - add item to cart
+DELETE | re_path('^remove/(?P<product_id>\d+)/$... | delete | - remove items from cart
+POST | re_path('^create/$... | post | - create the order (submit)
 
 ### Data Models
 ![Image of DataModels](./readme_images/data_models.png)
