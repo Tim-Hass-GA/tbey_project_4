@@ -35,7 +35,7 @@ PUT | <int:vendor_id>/edit_vendor/ | update | - edit vendor profile
 DELETE | <int:vendor_id>/destroy_vendor/ | delete | - delete a vendor
 GET | cart_detail/ | read | - view cart detail
 POST (PUT) | re_path('^add/(?P<product_id>\d+)/$ | post (update) | - add item to cart
-DELETE | re_path('^remove/(?P<product_id>\d+)/$', views.cart_remove, name='cart_remove'),
+DELETE | re_path('^remove/(?P<product_id>\d+)/$ | delete | - remove items from cart
 POST | re_path('^create/$ | post | - create the order (submit)
 
 ### Data Models
