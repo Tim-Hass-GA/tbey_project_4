@@ -24,13 +24,15 @@ class ProductOrderForm(forms.ModelForm):
         # fields = ('product', 'vendor', 'product_count', 'order')
 
 class OrderCreateForm(forms.ModelForm):
-    # def __init__(self, *args, user, **kwargs):
+    # def __init__(self, *args, user):
     #      self.user = user
-    #      super().__init__(*args, **kwargs)
+    #      super().__init__(*args, user)
     class Meta:
         model = Order
-        # fields = ('user',)
+        # form.fields['user'] = forms.CharField()
+        # user = forms.
         fields = ('address',)
+        # fields = ('address','user',)
 
 PRODUCT_QUANTITY_CHOICES = [(i, str(i)) for i in range(1,6)]
 class AddToCartForm(forms.Form):

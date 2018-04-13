@@ -140,17 +140,23 @@ def delete_product(request, product_id):
 def order_create(request):
     cart = Cart(request)
     # OrderCreateFormSet = formset_factory(OrderCreateForm)
-    # formset = OrderCreateFormSet(form_kwargs={'user': request.user})
-
+    # form = OrderCreateFormSet(form_kwargs={'user': request.user})
+    # user = get_object_or_404(User, pk=request.user.id)
+    # print('request.user')
+    # print(request.user)
     if request.method == 'POST':
         # OrderCreateFormSet = formset_factory(OrderCreateForm)
-        # formset = OrderCreateFormSet(request.POST, form_kwargs={'user': request.user})
+        # form = OrderCreateFormSet(request.POST, request.user)
         form = OrderCreateForm(request.POST)
         # formset = OrderCreateForm(request.POST, {'user':request.user})
         # form = OrderCreateFormSet
         print(form)
         if form.is_valid():
             print('order create form is valid')
+            order = form.save(commit = False)
+            order.user = request.user
+            print(order.user)
+
             order = form.save()
             for item in cart:
                 OrderItems.objects.create(order=order,
@@ -163,8 +169,8 @@ def order_create(request):
     else:
         # OrderCreateFormSet = formset_factory(OrderCreateForm)
         # formset = OrderCreateFormSet(form_kwargs={'user': request.user})
-        # form = OrderCreateForm(form_kwargs={'user': request.user})
-
+        # print(user)
+        # form = OrderCreateForm(user=request.user.id)
         form = OrderCreateForm()
         return render(request, 'tbeystore/order_create.html', {'cart':cart,'form':form})
         # return render(request, 'tbeystore/order_create.html', {'cart':cart,'formset':formset})
