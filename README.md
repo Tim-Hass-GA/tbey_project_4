@@ -54,13 +54,13 @@ Question “results” page – displays results for a particular question.
 Like action – handles liking for a particular product.
 
 ### Data Models
-![Image of DataModels](./readme_image/data_models.png)
+![Image of DataModels](./readme_images/data_models.png)
 
 ### Wireframes
-![Image of Wireframes](./readme_image/wireframe_0.png)
-![Image of Wireframes](./readme_image/wireframe_1.png)
-![Image of Wireframes](./readme_image/wireframe_2.png)
-![Image of Wireframes](./readme_image/wireframe_3.png)
+![Image of Wireframes](./readme_images/wireframe_0.png)
+![Image of Wireframes](./readme_images/wireframe_1.png)
+![Image of Wireframes](./readme_images/wireframe_2.png)
+![Image of Wireframes](./readme_images/wireframe_3.png)
 
 ## Development Process
 
