@@ -138,18 +138,13 @@ def delete_product(request, product_id):
 
 
 def order_create(request):
+
+    # formset = OrderCreateForm(request.POST, {'user':request.user})
+    # form = OrderCreateFormSet
+    
     cart = Cart(request)
-    # OrderCreateFormSet = formset_factory(OrderCreateForm)
-    # form = OrderCreateFormSet(form_kwargs={'user': request.user})
-    # user = get_object_or_404(User, pk=request.user.id)
-    # print('request.user')
-    # print(request.user)
     if request.method == 'POST':
-        # OrderCreateFormSet = formset_factory(OrderCreateForm)
-        # form = OrderCreateFormSet(request.POST, request.user)
         form = OrderCreateForm(request.POST)
-        # formset = OrderCreateForm(request.POST, {'user':request.user})
-        # form = OrderCreateFormSet
         print(form)
         if form.is_valid():
             print('order create form is valid')
@@ -167,13 +162,8 @@ def order_create(request):
             # order_created.delay(order.id)
             return render(request, 'tbeystore/order_created.html', {'order':order})
     else:
-        # OrderCreateFormSet = formset_factory(OrderCreateForm)
-        # formset = OrderCreateFormSet(form_kwargs={'user': request.user})
-        # print(user)
-        # form = OrderCreateForm(user=request.user.id)
         form = OrderCreateForm()
         return render(request, 'tbeystore/order_create.html', {'cart':cart,'form':form})
-        # return render(request, 'tbeystore/order_create.html', {'cart':cart,'formset':formset})
 
 
 
