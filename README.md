@@ -20,9 +20,11 @@ HTML, CSS, Materialize, Django, Python, jQuery/Ajax, Postgresql
 
 ### Views
 Customer View
+
 ![Image of Wireframes](./readme_images/customer_view.png)
 
 Vendor View
+
 ![Image of Wireframes](./readme_images/vendor_view.png)
 
 
