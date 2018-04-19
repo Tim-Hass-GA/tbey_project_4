@@ -18,6 +18,13 @@ HTML, CSS, Materialize, Django, Python, jQuery/Ajax, Postgresql
 - Mel and Paul (customers) would like a unique platform to purchase products and services from.
 - TBEY allows any user to create a store for selling products and services.
 
+### Views
+Customer View
+![Image of Wireframes](./readme_images/customer_view.png)
+
+Vendor View
+![Image of Wireframes](./readme_images/vendor_view.png)
+
 
 ### CRUD Routes
 Verb | Path | Action | Used for
